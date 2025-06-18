@@ -531,37 +531,11 @@ async def get_startup_news():
 
 @api_router.get("/market-data")
 async def get_market_data():
-    """Get financial market data"""
+    """Get financial market data - DISABLED"""
     try:
-        # Use Yahoo Finance API or similar
-        symbols = ["^IXIC", "^GSPC", "BTC-USD"]  # NASDAQ, S&P 500, Bitcoin
-        market_data = []
-        
-        for symbol in symbols:
-            # Fallback data for now
-            if symbol == "^IXIC":
-                market_data.append({
-                    "symbol": "NASDAQ",
-                    "price": 15234.67,
-                    "change": 123.45,
-                    "change_percent": "+0.82%"
-                })
-            elif symbol == "^GSPC":
-                market_data.append({
-                    "symbol": "S&P 500", 
-                    "price": 4567.89,
-                    "change": -23.12,
-                    "change_percent": "-0.50%"
-                })
-            elif symbol == "BTC-USD":
-                market_data.append({
-                    "symbol": "Bitcoin",
-                    "price": 43567.23,
-                    "change": 1234.56,
-                    "change_percent": "+2.92%"
-                })
-        
-        return JSONResponse(content={"market_data": market_data})
+        # Market data widget disabled due to data accuracy issues
+        # Return empty array to hide widget on frontend
+        return JSONResponse(content={"market_data": []})
         
     except Exception as e:
         logging.error(f"Failed to get market data: {e}")
