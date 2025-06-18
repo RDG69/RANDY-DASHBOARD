@@ -29,6 +29,8 @@ const Dashboard = () => {
     minScore: ""
   });
   const [loading, setLoading] = useState(true);
+  const [tweetsLoading, setTweetsLoading] = useState(true);
+  const [marketLoading, setMarketLoading] = useState(true);
 
   // Load data on component mount with progressive loading
   useEffect(() => {
