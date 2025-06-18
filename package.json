@@ -1,0 +1,18 @@
+{
+  "name": "growth-signals",
+  "version": "1.0.0",
+  "description": "AI-powered B2B growth intelligence platform",
+  "scripts": {
+    "install:all": "cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && uvicorn server:app --reload --port 8001",
+    "build": "cd frontend && npm run build",
+    "deploy": "npm run build && echo 'Ready to deploy build/ folder'"
+  },
+  "repository": {
+    "type": "git", 
+    "url": "https://github.com/yourusername/growth-signals"
+  },
+  "author": "Silver Birch Growth",
+  "license": "MIT"
+}
