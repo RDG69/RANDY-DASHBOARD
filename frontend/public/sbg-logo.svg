@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <defs>
+    <style>
+      .logo-text { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; }
+      .green-stripe { fill: #00D45A; }
+      .black-text { fill: #2D3748; }
+    </style>
+  </defs>
+  
+  <!-- Green diagonal stripe -->
+  <polygon class="green-stripe" points="400,50 550,50 650,350 500,350"/>
+  
+  <!-- SBG Text -->
+  <text x="50" y="280" class="logo-text black-text" font-size="180">SBG</text>
+  
+  <!-- Additional green elements -->
+  <rect class="green-stripe" x="650" y="50" width="100" height="100"/>
+  <polygon class="green-stripe" points="650,150 750,150 750,200 700,200"/>
+</svg>
