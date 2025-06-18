@@ -387,27 +387,41 @@ const Dashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                           <div className="flex space-x-2">
-                            {lead.twitter_handle && (
+                            {lead.twitter_handle ? (
                               <a
-                                href={`https://twitter.com/${lead.twitter_handle}`}
+                                href={`https://twitter.com/${lead.twitter_handle.replace('@', '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-600 hover:text-blue-900"
+                                title="View Twitter Profile"
                               >
                                 <Twitter className="w-4 h-4" />
                               </a>
+                            ) : (
+                              <span className="text-gray-300" title="Twitter not available">
+                                <Twitter className="w-4 h-4" />
+                              </span>
                             )}
-                            {lead.linkedin_url && (
+                            {lead.linkedin_url ? (
                               <a
                                 href={lead.linkedin_url}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-blue-600 hover:text-blue-900"
+                                title="View LinkedIn Profile"
                               >
                                 <Linkedin className="w-4 h-4" />
                               </a>
+                            ) : (
+                              <span className="text-gray-300" title="LinkedIn not available">
+                                <Linkedin className="w-4 h-4" />
+                              </span>
                             )}
-                            <button className="text-green-600 hover:text-green-900">
+                            <button 
+                              className="text-gray-400 cursor-not-allowed" 
+                              title="External research - Demo mode"
+                              disabled
+                            >
                               <ExternalLink className="w-4 h-4" />
                             </button>
                           </div>
