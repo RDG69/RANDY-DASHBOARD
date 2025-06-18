@@ -122,73 +122,191 @@ class ContentAnalysisRequest(BaseModel):
 FALLBACK_LEADS = [
     {
         "id": str(uuid.uuid4()),
-        "company": "TechFlow Solutions",
-        "name": "Sarah Chen",
+        "company": "Stripe",
+        "name": "Patrick Collison",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
+        "priority": "High",
+        "score": 9.2,
+        "intent_signals": [
+            {"signal": "International Expansion", "confidence": 0.95, "reasoning": "Recently announced new market entries in Southeast Asia"},
+            {"signal": "Enterprise Sales", "confidence": 0.9, "reasoning": "Hiring enterprise sales leaders across multiple regions"}
+        ],
+        "social_content": "Excited about our expansion into new markets and the incredible growth we're seeing in enterprise adoption.",
+        "twitter_handle": "@patrickc",
+        "linkedin_url": "https://linkedin.com/in/patrickcollison",
+        "company_website": "https://stripe.com",
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "company": "Notion",
+        "name": "Ivan Zhao",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
+        "priority": "High",
+        "score": 8.9,
+        "intent_signals": [
+            {"signal": "VP Sales Hiring", "confidence": 0.88, "reasoning": "Multiple job postings for senior sales leadership positions"},
+            {"signal": "Sales Process Optimization", "confidence": 0.85, "reasoning": "Recent discussions about scaling sales operations"}
+        ],
+        "social_content": "Building out our enterprise sales team as we scale to serve larger organizations. The future of work is collaborative.",
+        "twitter_handle": "@ivanhzhao",
+        "linkedin_url": "https://linkedin.com/in/ivanhzhao",
+        "company_website": "https://notion.so",
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "company": "Airtable",
+        "name": "Howie Liu",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
+        "priority": "High",
+        "score": 8.8,
+        "intent_signals": [
+            {"signal": "CRM Migration", "confidence": 0.82, "reasoning": "Discussing integration challenges with existing CRM systems"},
+            {"signal": "Revenue Operations", "confidence": 0.9, "reasoning": "Focus on operational efficiency and revenue optimization"}
+        ],
+        "social_content": "Working on improving our revenue operations and making our sales process more efficient. Exciting times ahead!",
+        "twitter_handle": "@howieliu",
+        "linkedin_url": "https://linkedin.com/in/howieliu",
+        "company_website": "https://airtable.com",
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "company": "Figma",
+        "name": "Dylan Field",
         "role": "CEO",
         "geography": "San Francisco, CA, USA",
         "priority": "High",
         "score": 8.7,
         "intent_signals": [
-            {"signal": "Series A Fundraising", "confidence": 0.9, "reasoning": "Recent tweets about investor meetings and funding preparation"},
-            {"signal": "VP Sales Hiring", "confidence": 0.8, "reasoning": "Posted job listing for senior sales leadership role"}
+            {"signal": "Series B Fundraising", "confidence": 0.85, "reasoning": "Recent discussions about growth funding and market expansion"},
+            {"signal": "Sales Analytics", "confidence": 0.78, "reasoning": "Need for better sales performance tracking and analytics"}
         ],
-        "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
-        "twitter_handle": None,  # Remove fake handles
-        "linkedin_url": None,   # Remove fake URLs
+        "social_content": "Focusing on data-driven sales strategies as we continue to grow our enterprise customer base.",
+        "twitter_handle": "@dylfield",
+        "linkedin_url": "https://linkedin.com/in/dylanfield",
+        "company_website": "https://figma.com",
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     },
     {
         "id": str(uuid.uuid4()),
-        "company": "DataSync Inc",
-        "name": "Michael Rodriguez",
-        "role": "Founder",
-        "geography": "Austin, TX, USA", 
+        "company": "Linear",
+        "name": "Karri Saarinen",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
+        "priority": "Medium",
+        "score": 8.5,
+        "intent_signals": [
+            {"signal": "GTM Expansion", "confidence": 0.88, "reasoning": "Expanding go-to-market strategy for enterprise segment"},
+            {"signal": "Marketing Automation", "confidence": 0.75, "reasoning": "Investing in marketing automation tools for lead generation"}
+        ],
+        "social_content": "Scaling our go-to-market efforts and investing heavily in marketing automation to reach more development teams.",
+        "twitter_handle": "@karrisaarinen",
+        "linkedin_url": "https://linkedin.com/in/karrisaarinen",
+        "company_website": "https://linear.app",
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "company": "Vercel",
+        "name": "Guillermo Rauch",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
+        "priority": "High",
+        "score": 8.6,
+        "intent_signals": [
+            {"signal": "Enterprise Sales", "confidence": 0.92, "reasoning": "Major focus on enterprise adoption and sales team expansion"},
+            {"signal": "Sales Enablement", "confidence": 0.85, "reasoning": "Implementing new sales enablement tools and processes"}
+        ],
+        "social_content": "Doubling down on enterprise sales and enablement. The developer experience revolution is just getting started.",
+        "twitter_handle": "@rauchg",
+        "linkedin_url": "https://linkedin.com/in/guillermor",
+        "company_website": "https://vercel.com",
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "company": "Retool",
+        "name": "David Hsu",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
         "priority": "High",
         "score": 8.4,
         "intent_signals": [
-            {"signal": "CRM Migration", "confidence": 0.85, "reasoning": "Discussing CRM limitations and need for better sales analytics"},
-            {"signal": "Sales Analytics", "confidence": 0.9, "reasoning": "Multiple posts about need for better sales reporting"}
+            {"signal": "Sales Tech Stack Evaluation", "confidence": 0.87, "reasoning": "Evaluating new sales technologies for better pipeline management"},
+            {"signal": "CRO Hiring", "confidence": 0.83, "reasoning": "Actively recruiting for Chief Revenue Officer position"}
         ],
-        "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
-        "twitter_handle": None,
-        "linkedin_url": None,
+        "social_content": "Looking for a world-class CRO to help us scale our revenue operations. Exciting growth ahead for internal tools.",
+        "twitter_handle": "@dvdhsu",
+        "linkedin_url": "https://linkedin.com/in/davidhsu42",
+        "company_website": "https://retool.com",
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     },
     {
         "id": str(uuid.uuid4()),
-        "company": "CloudBridge Systems",
-        "name": "Emily Watson",
-        "role": "COO",
-        "geography": "London, UK",
+        "company": "Webflow",
+        "name": "Vlad Magdalin",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
         "priority": "Medium",
-        "score": 7.9,
+        "score": 8.3,
         "intent_signals": [
-            {"signal": "International Expansion", "confidence": 0.8, "reasoning": "Planning European market entry"},
-            {"signal": "GTM Strategy", "confidence": 0.75, "reasoning": "Developing go-to-market approach for new regions"}
+            {"signal": "International Expansion", "confidence": 0.84, "reasoning": "Plans for European market expansion and localization"},
+            {"signal": "Customer Success", "confidence": 0.79, "reasoning": "Investing in customer success infrastructure for enterprise clients"}
         ],
-        "social_content": "Planning our European expansion strategy. Need to build out local sales teams and adapt our GTM approach. Exciting times! #expansion #GTM #Europe",
-        "twitter_handle": None,
-        "linkedin_url": None,
+        "social_content": "Expanding internationally and building world-class customer success for our enterprise customers. Visual development is the future.",
+        "twitter_handle": "@callmevlad",
+        "linkedin_url": "https://linkedin.com/in/vladmagdalin",
+        "company_website": "https://webflow.com",
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     },
     {
         "id": str(uuid.uuid4()),
-        "company": "AI Dynamics",
-        "name": "James Park",
-        "role": "CMO", 
-        "geography": "Toronto, ON, Canada",
+        "company": "Supabase",
+        "name": "Paul Copplestone",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
         "priority": "High",
-        "score": 8.8,
+        "score": 8.5,
         "intent_signals": [
-            {"signal": "AI Adoption", "confidence": 0.95, "reasoning": "Leading AI implementation initiatives"},
-            {"signal": "Marketing Automation", "confidence": 0.8, "reasoning": "Seeking advanced marketing tech solutions"}
+            {"signal": "Series A Fundraising", "confidence": 0.91, "reasoning": "Recently completed Series A with strong investor interest"},
+            {"signal": "Sales Process Optimization", "confidence": 0.86, "reasoning": "Optimizing sales funnel for developer-focused products"}
         ],
-        "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
-        "twitter_handle": None,
-        "linkedin_url": None,
+        "social_content": "Fresh off our Series A, we're optimizing our sales process to better serve developers and enterprises building on Supabase.",
+        "twitter_handle": "@kiwicopple",
+        "linkedin_url": "https://linkedin.com/in/paulcopplestone",
+        "company_website": "https://supabase.com",
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
+    },
+    {
+        "id": str(uuid.uuid4()),
+        "company": "Planetscale",
+        "name": "Sam Lambert",
+        "role": "CEO",
+        "geography": "San Francisco, CA, USA",
+        "priority": "Medium",
+        "score": 8.2,
+        "intent_signals": [
+            {"signal": "GTM Strategy", "confidence": 0.88, "reasoning": "Developing new go-to-market strategies for database products"},
+            {"signal": "Developer Marketing", "confidence": 0.82, "reasoning": "Focus on developer-centric marketing and community building"}
+        ],
+        "social_content": "Refining our GTM strategy to better reach developers who need scalable database solutions. The serverless database era is here.",
+        "twitter_handle": "@iamsamlambert",
+        "linkedin_url": "https://linkedin.com/in/samlambert",
+        "company_website": "https://planetscale.com",
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     }
