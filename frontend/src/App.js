@@ -288,10 +288,14 @@ const Dashboard = () => {
                     onChange={(e) => handleFilterChange("geography", e.target.value)}
                     className="text-sm border border-gray-300 rounded px-3 py-2"
                   >
-                    <option value="">All Regions</option>
-                    <option value="North America">North America</option>
-                    <option value="Europe">Europe</option>
-                    <option value="Asia">Asia</option>
+                    <option value="">All Locations</option>
+                    <option value="USA">USA</option>
+                    <option value="Canada">Canada</option>
+                    <option value="UK">UK</option>
+                    <option value="San Francisco">San Francisco</option>
+                    <option value="Austin">Austin</option>
+                    <option value="London">London</option>
+                    <option value="Toronto">Toronto</option>
                   </select>
                   
                   <select
