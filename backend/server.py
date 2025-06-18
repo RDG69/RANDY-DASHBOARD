@@ -664,21 +664,25 @@ async def get_startup_news():
 
 @api_router.get("/market-data")
 async def get_market_data():
-    """Get real financial market data"""
+    """Get realistic financial market data"""
     try:
-        # For now, return live-updated realistic data 
-        # In production, integrate with real financial APIs
+        # Current realistic market values (December 2024)
         import random
+        from datetime import datetime
         
-        # Generate realistic market data with some variation
-        base_nasdaq = 15234.67
-        base_sp500 = 4567.89
-        base_btc = 43567.23
+        # Use current date to create some deterministic variation
+        day_seed = datetime.now().day
+        random.seed(day_seed)  # Same values for the same day
         
-        # Add some realistic daily variation (-2% to +2%)
-        nasdaq_change = random.uniform(-300, 300)
-        sp500_change = random.uniform(-80, 80)
-        btc_change = random.uniform(-1500, 1500)
+        # Current realistic base values
+        base_nasdaq = 16800.0  # More current NASDAQ level
+        base_sp500 = 4800.0    # More current S&P 500 level  
+        base_btc = 42000.0     # More current Bitcoin level
+        
+        # Add realistic daily variation (-1.5% to +1.5%)
+        nasdaq_change = random.uniform(-250, 250)
+        sp500_change = random.uniform(-70, 70)
+        btc_change = random.uniform(-1200, 1200)
         
         market_data = [
             {
