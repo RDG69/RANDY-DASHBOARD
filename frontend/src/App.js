@@ -188,9 +188,27 @@ const Dashboard = () => {
             </div>
 
             {/* Market Data Widget */}
-            {marketData && marketData.length > 0 && (
-              <div className="flex items-center space-x-6">
-                {marketData.map((market, index) => (
+            <div className="flex items-center space-x-6">
+              {marketLoading ? (
+                <div className="flex space-x-4">
+                  <div className="animate-pulse">
+                    <div className="h-4 w-16 bg-gray-200 rounded mb-1"></div>
+                    <div className="h-5 w-20 bg-gray-200 rounded mb-1"></div>
+                    <div className="h-3 w-12 bg-gray-200 rounded"></div>
+                  </div>
+                  <div className="animate-pulse">
+                    <div className="h-4 w-16 bg-gray-200 rounded mb-1"></div>
+                    <div className="h-5 w-20 bg-gray-200 rounded mb-1"></div>
+                    <div className="h-3 w-12 bg-gray-200 rounded"></div>
+                  </div>
+                  <div className="animate-pulse">
+                    <div className="h-4 w-16 bg-gray-200 rounded mb-1"></div>
+                    <div className="h-5 w-20 bg-gray-200 rounded mb-1"></div>
+                    <div className="h-3 w-12 bg-gray-200 rounded"></div>
+                  </div>
+                </div>
+              ) : marketData && marketData.length > 0 ? (
+                marketData.map((market, index) => (
                   <div key={index} className="text-center">
                     <p className="text-xs font-medium text-gray-500">{market.symbol}</p>
                     <p className="text-sm font-bold text-gray-900">
@@ -200,9 +218,8 @@ const Dashboard = () => {
                       {market.change_percent}
                     </p>
                   </div>
-                ))}
-              </div>
-            )}
+                ))
+              ) : null}
           </div>
         </div>
       </header>
