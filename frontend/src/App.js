@@ -149,18 +149,20 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Market Data Widget */}
-            <div className="hidden md:flex items-center space-x-4">
-              {marketData.map((market, index) => (
-                <div key={index} className="text-center">
-                  <p className="text-xs font-medium text-gray-500">{market.symbol}</p>
-                  <p className="text-sm font-bold text-gray-900">${market.price?.toLocaleString()}</p>
-                  <p className={`text-xs ${market.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                    {market.change_percent}
-                  </p>
-                </div>
-              ))}
-            </div>
+            {/* Market Data Widget - Only show if data exists */}
+            {marketData && marketData.length > 0 && (
+              <div className="hidden md:flex items-center space-x-4">
+                {marketData.map((market, index) => (
+                  <div key={index} className="text-center">
+                    <p className="text-xs font-medium text-gray-500">{market.symbol}</p>
+                    <p className="text-sm font-bold text-gray-900">${market.price?.toLocaleString()}</p>
+                    <p className={`text-xs ${market.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {market.change_percent}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </header>
