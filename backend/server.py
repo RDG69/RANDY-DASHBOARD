@@ -544,17 +544,50 @@ async def get_startup_news():
         logging.error(f"Failed to get news: {e}")
         return JSONResponse(content={"news": FALLBACK_NEWS, "total": len(FALLBACK_NEWS)})
 
-@api_router.get("/market-data")
-async def get_market_data():
-    """Get financial market data - DISABLED"""
+async def fetch_real_market_data():
+    """Fetch real market data from Yahoo Finance API"""
     try:
-        # Market data widget disabled due to data accuracy issues
-        # Return empty array to hide widget on frontend
-        return JSONResponse(content={"market_data": []})
+        symbols = {
+            "^IXIC": "NASDAQ",
+            "^GSPC": "S&P 500", 
+            "BTC-USD": "Bitcoin"
+        }
+        
+        market_data = []
+        
+        for symbol, display_name in symbols.items():
+            try:
+                # Use Yahoo Finance API
+                url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
+                
+                async with httpx.AsyncClient() as client:
+                    response = await client.get(url, timeout=5.0)
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        result = data['chart']['result'][0]
+                        
+                        current_price = result['meta']['regularMarketPrice']
+                        prev_close = result['meta']['previousClose']
+                        change = current_price - prev_close
+                        change_percent = (change / prev_close) * 100
+                        
+                        market_data.append({
+                            "symbol": display_name,
+                            "price": round(current_price, 2),
+                            "change": round(change, 2),
+                            "change_percent": f"{'+' if change >= 0 else ''}{change_percent:.2f}%"
+                        })
+                    
+            except Exception as e:
+                logging.warning(f"Failed to fetch {symbol}: {e}")
+                continue
+        
+        return market_data if market_data else []
         
     except Exception as e:
-        logging.error(f"Failed to get market data: {e}")
-        return JSONResponse(content={"market_data": []})
+        logging.error(f"Market data fetch failed: {e}")
+        return []
 
 @api_router.get("/stats")
 async def get_dashboard_stats():
