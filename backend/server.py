@@ -475,7 +475,7 @@ async def get_leads(
         return JSONResponse(content={"leads": FALLBACK_LEADS, "total": len(FALLBACK_LEADS)})
 
 @api_router.get("/live-tweets")
-async def get_live_tweets(query: Optional[str] = Query("B2B sales OR CRM OR fundraising")):
+async def get_live_tweets(query: Optional[str] = Query(None)):
     """Get live tweets with intent analysis"""
     try:
         tweets = await fetch_twitter_data(query)
@@ -487,19 +487,18 @@ async def get_live_tweets(query: Optional[str] = Query("B2B sales OR CRM OR fund
             analysis = await analyze_content_with_ai(tweet_data["content"])
             tweet_data["intent_analysis"] = analysis
             
-            # Ensure id and timestamp are present
-            if "id" not in tweet_data:
-                tweet_data["id"] = str(uuid.uuid4())
+            # Use AI-determined relevance score
+            tweet_data["relevance_score"] = analysis.get("relevance_score", 0)
             
-            # Ensure timestamp is a string
-            if isinstance(tweet_data.get("timestamp"), datetime):
-                tweet_data["timestamp"] = tweet_data["timestamp"].isoformat()
-            elif "timestamp" not in tweet_data:
-                tweet_data["timestamp"] = datetime.utcnow().isoformat()
-                
-            analyzed_tweets.append(tweet_data)
+            # Only include tweets with relevance score > 3 (out of 10)
+            if tweet_data["relevance_score"] > 3:
+                analyzed_tweets.append(tweet_data)
         
-        return JSONResponse(content={"tweets": analyzed_tweets, "total": len(analyzed_tweets)})
+        # Sort by relevance score (highest first)
+        analyzed_tweets.sort(key=lambda x: x["relevance_score"], reverse=True)
+        
+        # Return top 10 most relevant
+        return JSONResponse(content={"tweets": analyzed_tweets[:10], "total": len(analyzed_tweets)})
         
     except Exception as e:
         logging.error(f"Failed to get live tweets: {e}")
