@@ -125,7 +125,7 @@ FALLBACK_LEADS = [
         "company": "TechFlow Solutions",
         "name": "Sarah Chen",
         "role": "CEO",
-        "geography": "North America",
+        "geography": "San Francisco, CA, USA",
         "priority": "High",
         "score": 8.7,
         "intent_signals": [
@@ -143,7 +143,7 @@ FALLBACK_LEADS = [
         "company": "DataSync Inc",
         "name": "Michael Rodriguez",
         "role": "Founder",
-        "geography": "North America", 
+        "geography": "Austin, TX, USA", 
         "priority": "High",
         "score": 8.4,
         "intent_signals": [
@@ -161,7 +161,7 @@ FALLBACK_LEADS = [
         "company": "CloudBridge Systems",
         "name": "Emily Watson",
         "role": "COO",
-        "geography": "Europe",
+        "geography": "London, UK",
         "priority": "Medium",
         "score": 7.9,
         "intent_signals": [
@@ -179,7 +179,7 @@ FALLBACK_LEADS = [
         "company": "AI Dynamics",
         "name": "James Park",
         "role": "CMO", 
-        "geography": "North America",
+        "geography": "Toronto, ON, Canada",
         "priority": "High",
         "score": 8.8,
         "intent_signals": [
