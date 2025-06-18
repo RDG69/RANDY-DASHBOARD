@@ -248,60 +248,80 @@ FALLBACK_TWEETS = [
 async def analyze_content_with_ai(content: str, context: str = "") -> Dict[str, Any]:
     """Analyze content for intent signals using AI"""
     if not openai_client:
-        # Fallback analysis
+        # Fallback analysis - be more conservative
         return {
-            "intent_signals": [
-                {"signal": "Sales Tech Stack Evaluation", "confidence": 0.7, "reasoning": "Content suggests interest in sales technology"}
-            ],
-            "priority": "Medium",
-            "score": 7.5
+            "intent_signals": [],
+            "priority": "Low",
+            "score": 0
         }
     
     try:
         prompt = f"""
-        Analyze the following content for B2B growth intent signals. Context: {context}
-        
-        Content: {content}
-        
-        Available intent signals: {', '.join(INTENT_SIGNALS)}
-        
-        Return a JSON response with:
-        1. intent_signals: Array of detected signals with confidence (0-1) and reasoning
-        2. priority: High/Medium/Low based on buying intent
-        3. score: Numerical score 0-10 for lead quality
-        
-        Focus on signals related to: fundraising, hiring, sales tech adoption, revenue challenges, expansion plans.
+        You are a B2B sales intelligence analyst. Analyze the following social media content for genuine business growth intent signals.
+
+        Content: "{content}"
+        Context: {context}
+
+        ONLY detect signals if there are CLEAR, EXPLICIT indicators. Do not force signals where they don't exist.
+
+        Available signals: {', '.join(INTENT_SIGNALS)}
+
+        Rules:
+        1. Only detect signals with HIGH CONFIDENCE (>0.7)
+        2. Look for explicit mentions of: hiring executives, fundraising, sales challenges, tech stack changes
+        3. Ignore: personal fundraising, political content, charity, non-business content
+        4. Score 0 if content is clearly not business-related
+        5. Be conservative - it's better to miss a signal than create false positives
+
+        Return ONLY a JSON object:
+        {{
+            "intent_signals": [
+                {{"signal": "signal_name", "confidence": 0.0-1.0, "reasoning": "clear_explanation"}}
+            ],
+            "priority": "High/Medium/Low",
+            "score": 0-10,
+            "relevance_score": 0-10
+        }}
+
+        If content is not business-related, return: {{"intent_signals": [], "priority": "Low", "score": 0, "relevance_score": 0}}
         """
         
         response = openai_client.chat.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=500,
-            temperature=0.3
+            max_tokens=300,
+            temperature=0.1  # Lower temperature for more consistent results
         )
         
         # Parse AI response
         try:
             analysis = json.loads(response.choices[0].message.content)
+            
+            # Validate the analysis
+            if not isinstance(analysis.get("intent_signals"), list):
+                analysis["intent_signals"] = []
+            
+            # Ensure scores are reasonable
+            analysis["score"] = max(0, min(10, analysis.get("score", 0)))
+            analysis["relevance_score"] = max(0, min(10, analysis.get("relevance_score", 0)))
+            
             return analysis
-        except:
-            # Fallback if parsing fails
+        except json.JSONDecodeError:
+            logging.warning("GPT returned invalid JSON, using fallback")
             return {
-                "intent_signals": [
-                    {"signal": "Sales Process Optimization", "confidence": 0.6, "reasoning": "AI analysis indicates sales-related intent"}
-                ],
-                "priority": "Medium", 
-                "score": 7.0
+                "intent_signals": [],
+                "priority": "Low",
+                "score": 0,
+                "relevance_score": 0
             }
             
     except Exception as e:
         logging.error(f"AI analysis failed: {e}")
         return {
-            "intent_signals": [
-                {"signal": "General Business Interest", "confidence": 0.5, "reasoning": "Fallback analysis"}
-            ],
+            "intent_signals": [],
             "priority": "Low",
-            "score": 5.0
+            "score": 0,
+            "relevance_score": 0
         }
 
 async def fetch_twitter_data(query: str = None, count: int = 10) -> List[Dict]:
