@@ -544,6 +544,17 @@ async def get_startup_news():
         logging.error(f"Failed to get news: {e}")
         return JSONResponse(content={"news": FALLBACK_NEWS, "total": len(FALLBACK_NEWS)})
 
+@api_router.get("/market-data")
+async def get_market_data():
+    """Get real financial market data"""
+    try:
+        market_data = await fetch_real_market_data()
+        return JSONResponse(content={"market_data": market_data})
+        
+    except Exception as e:
+        logging.error(f"Failed to get market data: {e}")
+        return JSONResponse(content={"market_data": []})
+
 async def fetch_real_market_data():
     """Fetch real market data from Yahoo Finance API"""
     try:
