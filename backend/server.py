@@ -133,8 +133,8 @@ FALLBACK_LEADS = [
             {"signal": "VP Sales Hiring", "confidence": 0.8, "reasoning": "Posted job listing for senior sales leadership role"}
         ],
         "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
-        "twitter_handle": "@sarahchen_tech",
-        "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
+        "twitter_handle": None,  # Remove fake handles
+        "linkedin_url": None,   # Remove fake URLs
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     },
@@ -151,8 +151,8 @@ FALLBACK_LEADS = [
             {"signal": "Sales Analytics", "confidence": 0.9, "reasoning": "Multiple posts about need for better sales reporting"}
         ],
         "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
-        "twitter_handle": "@mrodriguez_ds",
-        "linkedin_url": "https://linkedin.com/in/michael-rodriguez-datasync",
+        "twitter_handle": None,
+        "linkedin_url": None,
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     },
@@ -169,8 +169,8 @@ FALLBACK_LEADS = [
             {"signal": "GTM Strategy", "confidence": 0.75, "reasoning": "Developing go-to-market approach for new regions"}
         ],
         "social_content": "Planning our European expansion strategy. Need to build out local sales teams and adapt our GTM approach. Exciting times! #expansion #GTM #Europe",
-        "twitter_handle": "@emilyw_cb",
-        "linkedin_url": "https://linkedin.com/in/emily-watson-coo",
+        "twitter_handle": None,
+        "linkedin_url": None,
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     },
@@ -187,8 +187,8 @@ FALLBACK_LEADS = [
             {"signal": "Marketing Automation", "confidence": 0.8, "reasoning": "Seeking advanced marketing tech solutions"}
         ],
         "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
-        "twitter_handle": "@jamespark_ai",
-        "linkedin_url": "https://linkedin.com/in/james-park-cmo-ai",
+        "twitter_handle": None,
+        "linkedin_url": None,
         "status": "New",
         "timestamp": datetime.utcnow().isoformat()
     }
