@@ -96,10 +96,13 @@ const Dashboard = () => {
 
   const loadMarketData = async () => {
     try {
+      setMarketLoading(true);
       const response = await axios.get(`${API}/market-data`);
       setMarketData(response.data.market_data || []);
     } catch (error) {
       console.error("Error loading market data:", error);
+    } finally {
+      setMarketLoading(false);
     }
   };
 
