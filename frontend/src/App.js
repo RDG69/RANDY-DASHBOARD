@@ -535,7 +535,25 @@ const Dashboard = () => {
                 <p className="text-sm text-gray-500">Sales, hiring & growth activity</p>
               </div>
               <div className="p-6 space-y-4 max-h-96 overflow-y-auto">
-                {tweets.filter(tweet => tweet.relevance_score > 3).map((tweet) => (
+                {tweetsLoading ? (
+                  <div className="space-y-4">
+                    {[1,2,3].map((i) => (
+                      <div key={i} className="border border-gray-200 rounded-lg p-4 animate-pulse">
+                        <div className="flex items-start space-x-3 mb-3">
+                          <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
+                          <div>
+                            <div className="h-4 w-24 bg-gray-200 rounded mb-1"></div>
+                            <div className="h-3 w-16 bg-gray-200 rounded"></div>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="h-3 w-full bg-gray-200 rounded"></div>
+                          <div className="h-3 w-3/4 bg-gray-200 rounded"></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : tweets.filter(tweet => tweet.relevance_score > 3).map((tweet) => (
                   <div key={tweet.id} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center space-x-2">
