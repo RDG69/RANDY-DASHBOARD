@@ -187,6 +187,23 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Demo Notice */}
+      <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <Activity className="h-5 w-5 text-blue-400" />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-blue-700">
+                <strong>Demo Mode:</strong> This dashboard shows sample lead data and real Twitter signals. 
+                Social media links are disabled in demo. Live tweets and AI analysis are functional.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
