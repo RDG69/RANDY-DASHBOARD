@@ -304,10 +304,28 @@ async def analyze_content_with_ai(content: str, context: str = "") -> Dict[str, 
             "score": 5.0
         }
 
-async def fetch_twitter_data(query: str = "B2B sales OR CRM OR fundraising OR hiring", count: int = 10) -> List[Dict]:
-    """Fetch tweets using Twitter API"""
+async def fetch_twitter_data(query: str = None, count: int = 10) -> List[Dict]:
+    """Fetch tweets using Twitter API with B2B-specific queries"""
     if not TWITTER_BEARER_TOKEN:
         return FALLBACK_TWEETS
+    
+    # Define specific B2B growth signal queries
+    if not query:
+        b2b_queries = [
+            '"hiring CRO" OR "hiring chief revenue officer"',
+            '"VP Sales" OR "head of sales" OR "sales leader"',
+            '"scaling sales team" OR "growing sales"', 
+            '"Series A" OR "Series B" OR "funding round"',
+            '"looking for CRM" OR "CRM implementation"',
+            '"RevOps" OR "revenue operations"',
+            '"sales tech stack" OR "sales tools"',
+            '"GTM strategy" OR "go-to-market"',
+            '"B2B sales" OR "enterprise sales"',
+            '"sales enablement" OR "sales process"'
+        ]
+        # Rotate through queries or pick one randomly
+        import random
+        query = random.choice(b2b_queries)
     
     try:
         headers = {
@@ -316,10 +334,10 @@ async def fetch_twitter_data(query: str = "B2B sales OR CRM OR fundraising OR hi
         }
         
         params = {
-            "query": query,
-            "max_results": count,
+            "query": f"{query} -is:retweet lang:en",  # Exclude retweets and non-English
+            "max_results": min(count, 10),  # Twitter API limit
             "tweet.fields": "created_at,author_id,public_metrics,context_annotations",
-            "user.fields": "name,username",
+            "user.fields": "name,username,description,location",
             "expansions": "author_id"
         }
         
@@ -335,24 +353,34 @@ async def fetch_twitter_data(query: str = "B2B sales OR CRM OR fundraising OR hi
                 data = response.json()
                 tweets = []
                 
+                if not data.get('data'):
+                    # If no data, return fallback
+                    return FALLBACK_TWEETS
+                
                 users = {user['id']: user for user in data.get('includes', {}).get('users', [])}
                 
                 for tweet in data.get('data', []):
                     user = users.get(tweet['author_id'], {})
-                    tweets.append({
-                        "id": str(uuid.uuid4()),
-                        "tweet_id": tweet['id'],
-                        "content": tweet['text'],
-                        "author_name": user.get('name', 'Unknown'),
-                        "author_handle": f"@{user.get('username', 'unknown')}",
-                        "engagement_metrics": tweet.get('public_metrics', {}),
-                        "relevance_score": 7.5,  # Default score
-                        "timestamp": datetime.utcnow().isoformat()
-                    })
+                    
+                    # Only include tweets that seem business-related
+                    content = tweet['text'].lower()
+                    business_keywords = ['ceo', 'founder', 'startup', 'company', 'business', 'sales', 'revenue', 'growth', 'team', 'hiring', 'saas', 'b2b']
+                    
+                    if any(keyword in content for keyword in business_keywords):
+                        tweets.append({
+                            "id": str(uuid.uuid4()),
+                            "tweet_id": tweet['id'],
+                            "content": tweet['text'],
+                            "author_name": user.get('name', 'Unknown'),
+                            "author_handle": f"@{user.get('username', 'unknown')}",
+                            "engagement_metrics": tweet.get('public_metrics', {}),
+                            "relevance_score": 7.5,  # Will be updated by AI analysis
+                            "timestamp": datetime.utcnow().isoformat()
+                        })
                 
-                return tweets
+                return tweets if tweets else FALLBACK_TWEETS
             else:
-                logging.warning(f"Twitter API error: {response.status_code}")
+                logging.warning(f"Twitter API error: {response.status_code} - {response.text}")
                 return FALLBACK_TWEETS
                 
     except Exception as e:
