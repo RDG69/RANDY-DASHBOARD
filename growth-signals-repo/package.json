@@ -1,0 +1,26 @@
+{
+  "name": "growth-signals",
+  "version": "1.0.0",
+  "description": "AI-powered B2B growth intelligence platform",
+  "keywords": ["b2b", "sales", "ai", "growth", "intent-signals", "dashboard"],
+  "author": "Silver Birch Growth",
+  "license": "MIT",
+  "homepage": "https://silverbirchgrowth.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silverbirchgrowth/growth-signals"
+  },
+  "scripts": {
+    "install:all": "cd frontend && npm install && cd ../backend && pip install -r requirements.txt",
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && uvicorn server:app --reload --port 8001",
+    "build:frontend": "cd frontend && npm run build",
+    "deploy:vercel": "cd frontend && vercel --prod",
+    "test:frontend": "cd frontend && npm test",
+    "test:backend": "cd backend && python -m pytest"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "python": ">=3.9.0"
+  }
+}
