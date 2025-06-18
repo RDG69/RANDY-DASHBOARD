@@ -44,6 +44,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Custom JSON encoder to handle datetime objects
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
 # Intent Signals Configuration
 INTENT_SIGNALS = [
     "Series A Fundraising", "Series B Fundraising", "Seed Funding",
@@ -114,6 +121,7 @@ class ContentAnalysisRequest(BaseModel):
 # Fallback Data
 FALLBACK_LEADS = [
     {
+        "id": str(uuid.uuid4()),
         "company": "TechFlow Solutions",
         "name": "Sarah Chen",
         "role": "CEO",
@@ -127,9 +135,11 @@ FALLBACK_LEADS = [
         "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
         "twitter_handle": "@sarahchen_tech",
         "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
-        "status": "New"
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
     },
     {
+        "id": str(uuid.uuid4()),
         "company": "DataSync Inc",
         "name": "Michael Rodriguez",
         "role": "Founder",
@@ -143,9 +153,11 @@ FALLBACK_LEADS = [
         "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
         "twitter_handle": "@mrodriguez_ds",
         "linkedin_url": "https://linkedin.com/in/michael-rodriguez-datasync",
-        "status": "New"
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
     },
     {
+        "id": str(uuid.uuid4()),
         "company": "CloudBridge Systems",
         "name": "Emily Watson",
         "role": "COO",
@@ -159,9 +171,11 @@ FALLBACK_LEADS = [
         "social_content": "Planning our European expansion strategy. Need to build out local sales teams and adapt our GTM approach. Exciting times! #expansion #GTM #Europe",
         "twitter_handle": "@emilyw_cb",
         "linkedin_url": "https://linkedin.com/in/emily-watson-coo",
-        "status": "New"
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
     },
     {
+        "id": str(uuid.uuid4()),
         "company": "AI Dynamics",
         "name": "James Park",
         "role": "CMO", 
@@ -175,7 +189,8 @@ FALLBACK_LEADS = [
         "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
         "twitter_handle": "@jamespark_ai",
         "linkedin_url": "https://linkedin.com/in/james-park-cmo-ai",
-        "status": "New"
+        "status": "New",
+        "timestamp": datetime.utcnow().isoformat()
     }
 ]
 
@@ -208,20 +223,24 @@ FALLBACK_NEWS = [
 
 FALLBACK_TWEETS = [
     {
+        "id": str(uuid.uuid4()),
         "tweet_id": "1234567890",
         "content": "Just closed our Series A! $15M to scale our B2B sales platform. Hiring VP Sales and RevOps team. Exciting times ahead! #startup #funding #hiring",
         "author_name": "Alex Thompson", 
         "author_handle": "@alexthompson_ceo",
         "engagement_metrics": {"likes": 234, "retweets": 45, "replies": 28},
-        "relevance_score": 9.1
+        "relevance_score": 9.1,
+        "timestamp": datetime.utcnow().isoformat()
     },
     {
+        "id": str(uuid.uuid4()),
         "tweet_id": "1234567891",
         "content": "Our current CRM is a bottleneck. Looking for enterprise-grade solutions with better analytics. Any recommendations for scaling B2B sales teams?",
         "author_name": "Lisa Chen",
         "author_handle": "@lisachen_ops", 
         "engagement_metrics": {"likes": 156, "retweets": 32, "replies": 67},
-        "relevance_score": 8.3
+        "relevance_score": 8.3,
+        "timestamp": datetime.utcnow().isoformat()
     }
 ]
 
@@ -321,12 +340,14 @@ async def fetch_twitter_data(query: str = "B2B sales OR CRM OR fundraising OR hi
                 for tweet in data.get('data', []):
                     user = users.get(tweet['author_id'], {})
                     tweets.append({
+                        "id": str(uuid.uuid4()),
                         "tweet_id": tweet['id'],
                         "content": tweet['text'],
                         "author_name": user.get('name', 'Unknown'),
                         "author_handle": f"@{user.get('username', 'unknown')}",
                         "engagement_metrics": tweet.get('public_metrics', {}),
-                        "relevance_score": 7.5  # Default score
+                        "relevance_score": 7.5,  # Default score
+                        "timestamp": datetime.utcnow().isoformat()
                     })
                 
                 return tweets
@@ -392,8 +413,11 @@ async def get_leads(
         # Convert to Lead models
         formatted_leads = []
         for lead_data in leads:
+            # Ensure timestamp is a string
+            if isinstance(lead_data.get("timestamp"), datetime):
+                lead_data["timestamp"] = lead_data["timestamp"].isoformat()
+            
             lead_data["id"] = lead_data.get("id", str(uuid.uuid4()))
-            lead_data["timestamp"] = lead_data.get("timestamp", datetime.utcnow())
             formatted_leads.append(lead_data)
             
         return JSONResponse(content={"leads": formatted_leads, "total": len(formatted_leads)})
@@ -414,8 +438,17 @@ async def get_live_tweets(query: Optional[str] = Query("B2B sales OR CRM OR fund
             # Run AI analysis on tweet content
             analysis = await analyze_content_with_ai(tweet_data["content"])
             tweet_data["intent_analysis"] = analysis
-            tweet_data["id"] = str(uuid.uuid4())
-            tweet_data["timestamp"] = datetime.utcnow()
+            
+            # Ensure id and timestamp are present
+            if "id" not in tweet_data:
+                tweet_data["id"] = str(uuid.uuid4())
+            
+            # Ensure timestamp is a string
+            if isinstance(tweet_data.get("timestamp"), datetime):
+                tweet_data["timestamp"] = tweet_data["timestamp"].isoformat()
+            elif "timestamp" not in tweet_data:
+                tweet_data["timestamp"] = datetime.utcnow().isoformat()
+                
             analyzed_tweets.append(tweet_data)
         
         return JSONResponse(content={"tweets": analyzed_tweets, "total": len(analyzed_tweets)})
