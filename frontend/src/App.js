@@ -30,24 +30,28 @@ const Dashboard = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  // Load data on component mount
+  // Load data on component mount with progressive loading
   useEffect(() => {
-    loadAllData();
+    loadCriticalDataFirst();
   }, []);
 
-  const loadAllData = async () => {
-    setLoading(true);
+  const loadCriticalDataFirst = async () => {
+    // Load most important data first (leads, stats, news)
     try {
       await Promise.all([
         loadLeads(),
-        loadTweets(),
-        loadNews(),
-        loadMarketData(),
-        loadStats()
+        loadStats(),
+        loadNews()
       ]);
+      setLoading(false); // Allow user to interact with main content
+      
+      // Load secondary data in background
+      setTimeout(() => {
+        loadMarketData();
+        loadTweets();
+      }, 100);
     } catch (error) {
-      console.error("Error loading data:", error);
-    } finally {
+      console.error("Error loading critical data:", error);
       setLoading(false);
     }
   };
