@@ -75,10 +75,13 @@ const Dashboard = () => {
 
   const loadTweets = async () => {
     try {
+      setTweetsLoading(true);
       const response = await axios.get(`${API}/live-tweets`);
       setTweets(response.data.tweets || []);
     } catch (error) {
       console.error("Error loading tweets:", error);
+    } finally {
+      setTweetsLoading(false);
     }
   };
 
