@@ -112,9 +112,13 @@ const Dashboard = () => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
-  // Apply filters
+  // Apply filters with debouncing
   useEffect(() => {
-    loadLeads();
+    const timeoutId = setTimeout(() => {
+      loadLeads();
+    }, 300); // 300ms delay
+
+    return () => clearTimeout(timeoutId);
   }, [filters]);
 
   const getPriorityColor = (priority) => {
