@@ -220,6 +220,7 @@ const Dashboard = () => {
                   </div>
                 ))
               ) : null}
+            </div>
           </div>
         </div>
       </header>
