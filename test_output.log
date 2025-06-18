@@ -1,0 +1,809 @@
+Testing API at: https://bcfadc05-47d4-4401-8547-56a7e2fbdcc1.preview.emergentagent.com/api
+
+=== Testing Root API Endpoint ===
+Root API Response: {'message': 'Growth Signals API v1.0.0', 'status': 'operational'}
+✅ Root API endpoint test passed
+.
+=== Testing Leads API Endpoint (No Filters) ===
+Response status code: 200
+Response data: {
+  "leads": [
+    {
+      "id": "d0be5b75-186d-4b1f-ae6b-c43255cc1002",
+      "company": "TechFlow Solutions",
+      "name": "Sarah Chen",
+      "role": "CEO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.7,
+      "intent_signals": [
+        {
+          "signal": "Series A Fundraising",
+          "confidence": 0.9,
+          "reasoning": "Recent tweets about investor meetings and funding preparation"
+        },
+        {
+          "signal": "VP Sales Hiring",
+          "confidence": 0.8,
+          "reasoning": "Posted job listing for senior sales leadership role"
+        }
+      ],
+      "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
+      "twitter_handle": "@sarahchen_tech",
+      "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138691"
+    },
+    {
+      "id": "0c70e23f-2eb9-481d-b50b-e4c163e1880f",
+      "company": "DataSync Inc",
+      "name": "Michael Rodriguez",
+      "role": "Founder",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.4,
+      "intent_signals": [
+        {
+          "signal": "CRM Migration",
+          "confidence": 0.85,
+          "reasoning": "Discussing CRM limitations and need for better sales analytics"
+        },
+        {
+          "signal": "Sales Analytics",
+          "confidence": 0.9,
+          "reasoning": "Multiple posts about need for better sales reporting"
+        }
+      ],
+      "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
+      "twitter_handle": "@mrodriguez_ds",
+      "linkedin_url": "https://linkedin.com/in/michael-rodriguez-datasync",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138707"
+    },
+    {
+      "id": "e403ed1b-6155-4767-967c-2da8d99d30c5",
+      "company": "CloudBridge Systems",
+      "name": "Emily Watson",
+      "role": "COO",
+      "geography": "Europe",
+      "priority": "Medium",
+      "score": 7.9,
+      "intent_signals": [
+        {
+          "signal": "International Expansion",
+          "confidence": 0.8,
+          "reasoning": "Planning European market entry"
+        },
+        {
+          "signal": "GTM Strategy",
+          "confidence": 0.75,
+          "reasoning": "Developing go-to-market approach for new regions"
+        }
+      ],
+      "social_content": "Planning our European expansion strategy. Need to build out local sales teams and adapt our GTM approach. Exciting times! #expansion #GTM #Europe",
+      "twitter_handle": "@emilyw_cb",
+      "linkedin_url": "https://linkedin.com/in/emily-watson-coo",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138716"
+    },
+    {
+      "id": "05017b12-5a61-4442-a77b-a481ad943968",
+      "company": "AI Dynamics",
+      "name": "James Park",
+      "role": "CMO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.8,
+      "intent_signals": [
+        {
+          "signal": "AI Adoption",
+          "confidence": 0.95,
+          "reasoning": "Leading AI implementation initiatives"
+        },
+        {
+          "signal": "Marketing Automation",
+          "confidence": 0.8,
+          "reasoning": "Seeking advanced marketing tech solutions"
+        }
+      ],
+      "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
+      "twitter_handle": "@jamespark_ai",
+      "linkedin_url": "https://linkedin.com/in/james-park-cmo-ai",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138728"
+    }
+  ],
+  "total": 4
+}
+Found 4 leads
+✅ Leads API endpoint (no filters) test passed
+.
+=== Testing Leads API Endpoint (With Filters) ===
+Testing role filter...
+Role filter response status: 200
+Role filter data: {
+  "leads": [
+    {
+      "id": "d0be5b75-186d-4b1f-ae6b-c43255cc1002",
+      "company": "TechFlow Solutions",
+      "name": "Sarah Chen",
+      "role": "CEO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.7,
+      "intent_signals": [
+        {
+          "signal": "Series A Fundraising",
+          "confidence": 0.9,
+          "reasoning": "Recent tweets about investor meetings and funding preparation"
+        },
+        {
+          "signal": "VP Sales Hiring",
+          "confidence": 0.8,
+          "reasoning": "Posted job listing for senior sales leadership role"
+        }
+      ],
+      "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
+      "twitter_handle": "@sarahchen_tech",
+      "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138691"
+    }
+  ],
+  "total": 1
+}
+✅ Role filter test passed
+Testing geography filter...
+Geography filter response status: 200
+Geography filter data: {
+  "leads": [
+    {
+      "id": "d0be5b75-186d-4b1f-ae6b-c43255cc1002",
+      "company": "TechFlow Solutions",
+      "name": "Sarah Chen",
+      "role": "CEO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.7,
+      "intent_signals": [
+        {
+          "signal": "Series A Fundraising",
+          "confidence": 0.9,
+          "reasoning": "Recent tweets about investor meetings and funding preparation"
+        },
+        {
+          "signal": "VP Sales Hiring",
+          "confidence": 0.8,
+          "reasoning": "Posted job listing for senior sales leadership role"
+        }
+      ],
+      "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
+      "twitter_handle": "@sarahchen_tech",
+      "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138691"
+    },
+    {
+      "id": "0c70e23f-2eb9-481d-b50b-e4c163e1880f",
+      "company": "DataSync Inc",
+      "name": "Michael Rodriguez",
+      "role": "Founder",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.4,
+      "intent_signals": [
+        {
+          "signal": "CRM Migration",
+          "confidence": 0.85,
+          "reasoning": "Discussing CRM limitations and need for better sales analytics"
+        },
+        {
+          "signal": "Sales Analytics",
+          "confidence": 0.9,
+          "reasoning": "Multiple posts about need for better sales reporting"
+        }
+      ],
+      "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
+      "twitter_handle": "@mrodriguez_ds",
+      "linkedin_url": "https://linkedin.com/in/michael-rodriguez-datasync",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138707"
+    },
+    {
+      "id": "05017b12-5a61-4442-a77b-a481ad943968",
+      "company": "AI Dynamics",
+      "name": "James Park",
+      "role": "CMO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.8,
+      "intent_signals": [
+        {
+          "signal": "AI Adoption",
+          "confidence": 0.95,
+          "reasoning": "Leading AI implementation initiatives"
+        },
+        {
+          "signal": "Marketing Automation",
+          "confidence": 0.8,
+          "reasoning": "Seeking advanced marketing tech solutions"
+        }
+      ],
+      "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
+      "twitter_handle": "@jamespark_ai",
+      "linkedin_url": "https://linkedin.com/in/james-park-cmo-ai",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138728"
+    }
+  ],
+  "total": 3
+}
+✅ Geography filter test passed
+Testing priority filter...
+Priority filter response status: 200
+Priority filter data: {
+  "leads": [
+    {
+      "id": "d0be5b75-186d-4b1f-ae6b-c43255cc1002",
+      "company": "TechFlow Solutions",
+      "name": "Sarah Chen",
+      "role": "CEO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.7,
+      "intent_signals": [
+        {
+          "signal": "Series A Fundraising",
+          "confidence": 0.9,
+          "reasoning": "Recent tweets about investor meetings and funding preparation"
+        },
+        {
+          "signal": "VP Sales Hiring",
+          "confidence": 0.8,
+          "reasoning": "Posted job listing for senior sales leadership role"
+        }
+      ],
+      "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
+      "twitter_handle": "@sarahchen_tech",
+      "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138691"
+    },
+    {
+      "id": "0c70e23f-2eb9-481d-b50b-e4c163e1880f",
+      "company": "DataSync Inc",
+      "name": "Michael Rodriguez",
+      "role": "Founder",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.4,
+      "intent_signals": [
+        {
+          "signal": "CRM Migration",
+          "confidence": 0.85,
+          "reasoning": "Discussing CRM limitations and need for better sales analytics"
+        },
+        {
+          "signal": "Sales Analytics",
+          "confidence": 0.9,
+          "reasoning": "Multiple posts about need for better sales reporting"
+        }
+      ],
+      "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
+      "twitter_handle": "@mrodriguez_ds",
+      "linkedin_url": "https://linkedin.com/in/michael-rodriguez-datasync",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138707"
+    },
+    {
+      "id": "05017b12-5a61-4442-a77b-a481ad943968",
+      "company": "AI Dynamics",
+      "name": "James Park",
+      "role": "CMO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.8,
+      "intent_signals": [
+        {
+          "signal": "AI Adoption",
+          "confidence": 0.95,
+          "reasoning": "Leading AI implementation initiatives"
+        },
+        {
+          "signal": "Marketing Automation",
+          "confidence": 0.8,
+          "reasoning": "Seeking advanced marketing tech solutions"
+        }
+      ],
+      "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
+      "twitter_handle": "@jamespark_ai",
+      "linkedin_url": "https://linkedin.com/in/james-park-cmo-ai",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138728"
+    }
+  ],
+  "total": 3
+}
+✅ Priority filter test passed
+Testing min_score filter...
+Min score filter response status: 200
+Min score filter data: {
+  "leads": [
+    {
+      "id": "d0be5b75-186d-4b1f-ae6b-c43255cc1002",
+      "company": "TechFlow Solutions",
+      "name": "Sarah Chen",
+      "role": "CEO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.7,
+      "intent_signals": [
+        {
+          "signal": "Series A Fundraising",
+          "confidence": 0.9,
+          "reasoning": "Recent tweets about investor meetings and funding preparation"
+        },
+        {
+          "signal": "VP Sales Hiring",
+          "confidence": 0.8,
+          "reasoning": "Posted job listing for senior sales leadership role"
+        }
+      ],
+      "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
+      "twitter_handle": "@sarahchen_tech",
+      "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138691"
+    },
+    {
+      "id": "0c70e23f-2eb9-481d-b50b-e4c163e1880f",
+      "company": "DataSync Inc",
+      "name": "Michael Rodriguez",
+      "role": "Founder",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.4,
+      "intent_signals": [
+        {
+          "signal": "CRM Migration",
+          "confidence": 0.85,
+          "reasoning": "Discussing CRM limitations and need for better sales analytics"
+        },
+        {
+          "signal": "Sales Analytics",
+          "confidence": 0.9,
+          "reasoning": "Multiple posts about need for better sales reporting"
+        }
+      ],
+      "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
+      "twitter_handle": "@mrodriguez_ds",
+      "linkedin_url": "https://linkedin.com/in/michael-rodriguez-datasync",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138707"
+    },
+    {
+      "id": "05017b12-5a61-4442-a77b-a481ad943968",
+      "company": "AI Dynamics",
+      "name": "James Park",
+      "role": "CMO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.8,
+      "intent_signals": [
+        {
+          "signal": "AI Adoption",
+          "confidence": 0.95,
+          "reasoning": "Leading AI implementation initiatives"
+        },
+        {
+          "signal": "Marketing Automation",
+          "confidence": 0.8,
+          "reasoning": "Seeking advanced marketing tech solutions"
+        }
+      ],
+      "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
+      "twitter_handle": "@jamespark_ai",
+      "linkedin_url": "https://linkedin.com/in/james-park-cmo-ai",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138728"
+    }
+  ],
+  "total": 3
+}
+✅ Min score filter test passed
+Testing combined filters...
+Combined filters response status: 200
+Combined filters data: {
+  "leads": [
+    {
+      "id": "d0be5b75-186d-4b1f-ae6b-c43255cc1002",
+      "company": "TechFlow Solutions",
+      "name": "Sarah Chen",
+      "role": "CEO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.7,
+      "intent_signals": [
+        {
+          "signal": "Series A Fundraising",
+          "confidence": 0.9,
+          "reasoning": "Recent tweets about investor meetings and funding preparation"
+        },
+        {
+          "signal": "VP Sales Hiring",
+          "confidence": 0.8,
+          "reasoning": "Posted job listing for senior sales leadership role"
+        }
+      ],
+      "social_content": "Exciting week ahead with investor meetings! Our B2B SaaS platform is showing incredible traction. Time to scale the sales team. #startup #funding #B2Bsales",
+      "twitter_handle": "@sarahchen_tech",
+      "linkedin_url": "https://linkedin.com/in/sarahchen-ceo",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138691"
+    },
+    {
+      "id": "0c70e23f-2eb9-481d-b50b-e4c163e1880f",
+      "company": "DataSync Inc",
+      "name": "Michael Rodriguez",
+      "role": "Founder",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.4,
+      "intent_signals": [
+        {
+          "signal": "CRM Migration",
+          "confidence": 0.85,
+          "reasoning": "Discussing CRM limitations and need for better sales analytics"
+        },
+        {
+          "signal": "Sales Analytics",
+          "confidence": 0.9,
+          "reasoning": "Multiple posts about need for better sales reporting"
+        }
+      ],
+      "social_content": "Our current CRM is holding us back. Need better analytics and reporting for our enterprise sales team. Anyone have recommendations? #CRM #salestech #analytics",
+      "twitter_handle": "@mrodriguez_ds",
+      "linkedin_url": "https://linkedin.com/in/michael-rodriguez-datasync",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138707"
+    },
+    {
+      "id": "05017b12-5a61-4442-a77b-a481ad943968",
+      "company": "AI Dynamics",
+      "name": "James Park",
+      "role": "CMO",
+      "geography": "North America",
+      "priority": "High",
+      "score": 8.8,
+      "intent_signals": [
+        {
+          "signal": "AI Adoption",
+          "confidence": 0.95,
+          "reasoning": "Leading AI implementation initiatives"
+        },
+        {
+          "signal": "Marketing Automation",
+          "confidence": 0.8,
+          "reasoning": "Seeking advanced marketing tech solutions"
+        }
+      ],
+      "social_content": "AI is transforming how we approach B2B marketing. Looking for advanced automation tools to scale our demand gen efforts. The future is now! #AI #MarTech #B2B",
+      "twitter_handle": "@jamespark_ai",
+      "linkedin_url": "https://linkedin.com/in/james-park-cmo-ai",
+      "status": "New",
+      "timestamp": "2025-06-18T18:23:00.138728"
+    }
+  ],
+  "total": 3
+}
+✅ Combined filters test passed
+.
+=== Testing Live Tweets API Endpoint ===
+Response status code: 200
+Response data: {
+  "tweets": [
+    {
+      "id": "d157cf5d-2517-4d00-9dc3-b581dc7f3dee",
+      "tweet_id": "1935403399903854688",
+      "content": "@Real_RobN One 8 year term only NO REELECTION. After DC gets elected for their 1 &amp; ONLY TERM, DC GIVES BACK ALL leftover campaign $ to their donors, &amp; then DC is FORBIDDEN from fundraising while they're serving out that Single term. So UNBEHOLDING on the way in, UNBEHOLDING on the way out.",
+      "author_name": "Rod Carrillo",
+      "author_handle": "@RebelReformer",
+      "engagement_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941335",
+      "intent_analysis": {
+        "intent_signals": [],
+        "priority": "Low",
+        "score": 0
+      }
+    },
+    {
+      "id": "0fca0de5-1e29-4759-b578-d1e6e5c0af5e",
+      "tweet_id": "1935403388411462093",
+      "content": "Help us shape our new fundraising pack! Have you taken on a challenge for #InflammatoryNeuropathiesUK, or did you run for GAIN? Share..\n\n\ud83d\udcac a motivational quote\n\ud83e\ude77 your top training tips with #GBS #CIDP #MMN\n\nReply below or email: hello@inflammatoryneuropathies.uk https://t.co/JvNwqChsVR",
+      "author_name": "Inflammatory Neuropathies UK",
+      "author_handle": "@InflamNeuroUK",
+      "engagement_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941348",
+      "intent_analysis": {
+        "intent_signals": [
+          {
+            "signal": "Lead Generation",
+            "confidence": 0.7,
+            "reasoning": "The organization is asking for people to share their experiences and tips, which could be a way of generating leads and building a community."
+          },
+          {
+            "signal": "Customer Acquisition",
+            "confidence": 0.6,
+            "reasoning": "By asking for people to share their experiences, they are potentially attracting new customers who are interested in the cause."
+          },
+          {
+            "signal": "Growth Strategy",
+            "confidence": 0.5,
+            "reasoning": "The organization is actively seeking input and engagement from its audience, which could be part of a larger growth strategy."
+          }
+        ],
+        "priority": "Medium",
+        "score": 6
+      }
+    },
+    {
+      "id": "60debd4f-41ef-4dfe-82d0-764dd5de1104",
+      "tweet_id": "1935403374561869933",
+      "content": "RT @Abed1536010: If you are unable to help me with fundraising, please assist me with promoting my campaign\ud83d\ude4f\n\nI sincerely hope that everyon\u2026",
+      "author_name": "the kia chapter",
+      "author_handle": "@B3CAUSEV4N",
+      "engagement_metrics": {
+        "retweet_count": 27,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941355",
+      "intent_analysis": {
+        "intent_signals": [
+          {
+            "signal": "Seed Funding",
+            "confidence": 0.7,
+            "reasoning": "The user is asking for assistance in promoting their fundraising campaign, which could indicate they are in the early stages of fundraising, such as seed funding."
+          }
+        ],
+        "priority": "Low",
+        "score": 2
+      }
+    },
+    {
+      "id": "365a7f31-d736-4e62-96cc-a4b7aa32273b",
+      "tweet_id": "1935403350239084882",
+      "content": "RT @IamBohhi: \ud83d\udd25 FUNDRAISER FOR A BUGGY \ud83d\udd25\nNext to other family members and friends we are fundraising for a evacuation and logistic lightwei\u2026",
+      "author_name": "DoggoCat95",
+      "author_handle": "@DoggoCat95",
+      "engagement_metrics": {
+        "retweet_count": 80,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941360",
+      "intent_analysis": {
+        "intent_signals": [
+          {
+            "signal": "Seed Funding",
+            "confidence": 0.7,
+            "reasoning": "The content mentions 'fundraising' which could indicate a seed funding round. However, it's unclear if this is for a business or a personal cause."
+          }
+        ],
+        "priority": "Low",
+        "score": 2
+      }
+    },
+    {
+      "id": "5b016dac-3abf-46ef-9089-a351115f876f",
+      "tweet_id": "1935403313521959186",
+      "content": "Biggest stock losers of the day\n$MA $V $BABA $CRM $INTU $MCD $LLY $SAP $IBKR $APP $BEKE $PAYC $ZTS $CPAY $PBA\nhttps://t.co/1f27sS0Jeb",
+      "author_name": "Ruth Miller",
+      "author_handle": "@RuthMiIIer",
+      "engagement_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 11
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941366",
+      "intent_analysis": {
+        "intent_signals": [],
+        "priority": "Low",
+        "score": 0
+      }
+    },
+    {
+      "id": "6d684334-5ead-44fb-941d-cc9d8f298036",
+      "tweet_id": "1935403310866903176",
+      "content": "CRM mal do mundo mesmo",
+      "author_name": "jur\u00eddico magneto de cueca",
+      "author_handle": "@COMICSILK",
+      "engagement_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941372",
+      "intent_analysis": {
+        "intent_signals": [],
+        "priority": "Low",
+        "score": 0
+      }
+    },
+    {
+      "id": "177606f3-4e9c-40f6-adce-a966b5c1d29b",
+      "tweet_id": "1935403304588022121",
+      "content": "RT @WildBeeOfficial: Fundraising for pickup trucks and a van for the 14th UAS regiment\nCollection of funds for Pickup trucks and a Van\n\n\ud83c\udfaf 1\u2026",
+      "author_name": "vaspsua \ud83d\udd31 \u25b5",
+      "author_handle": "@vaspsua",
+      "engagement_metrics": {
+        "retweet_count": 10,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941378",
+      "intent_analysis": {
+        "intent_signals": [
+          {
+            "signal": "Seed Funding",
+            "confidence": 0.7,
+            "reasoning": "The content mentions 'Fundraising for pickup trucks and a van for the 14th UAS regiment', which indicates a potential need for seed funding."
+          }
+        ],
+        "priority": "Medium",
+        "score": 5
+      }
+    },
+    {
+      "id": "d04ab7a1-3093-4426-b178-0f4889d7c7d5",
+      "tweet_id": "1935403285336441018",
+      "content": "RT @IamBohhi: This is \"Chaika\", my dad's teammate. Who, miraculously, avoided a FPV drone.\n\nWe are fundraising for a buggy, just like the o\u2026",
+      "author_name": "planetshenmue",
+      "author_handle": "@planetshen74375",
+      "engagement_metrics": {
+        "retweet_count": 126,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941384",
+      "intent_analysis": {
+        "intent_signals": [
+          {
+            "signal": "Seed Funding",
+            "confidence": 0.7,
+            "reasoning": "The content mentions 'fundraising for a buggy', which could be interpreted as a form of seed funding."
+          }
+        ],
+        "priority": "Low",
+        "score": 2
+      }
+    },
+    {
+      "id": "91386b5e-fa42-405c-8aef-f243ec02f027",
+      "tweet_id": "1935403277966860772",
+      "content": "RT @TokenAnalytics_: \ud83d\udea8 Fundraising Alert \ud83d\udcb0\n\n\ud83d\udca5 Privacy-Centric Layer 1 for Trading\n\n@DefxOfficial  just closed a $2.5 M Seed round to power\u2026",
+      "author_name": "DeFi thinker DeFi thinker",
+      "author_handle": "@dginkerDef81295",
+      "engagement_metrics": {
+        "retweet_count": 70,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941644",
+      "intent_analysis": {
+        "intent_signals": [
+          {
+            "signal": "Seed Funding",
+            "confidence": 1,
+            "reasoning": "The content mentions that @DefxOfficial has just closed a $2.5 M Seed round."
+          }
+        ],
+        "priority": "Medium",
+        "score": 7
+      }
+    },
+    {
+      "id": "0ee2e471-6f6f-412d-843f-8a5f68c71a05",
+      "tweet_id": "1935403270509576511",
+      "content": "RT @sidhant: Breaking: Khalistani 'extremists' use Canada for violence in India says, Canadian Intel\n\nCanada intelligence agency CSIS repor\u2026",
+      "author_name": "Bharatha4Ever (Modi Ka Parivaar)",
+      "author_handle": "@RSBHAT",
+      "engagement_metrics": {
+        "retweet_count": 623,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "relevance_score": 7.5,
+      "timestamp": "2025-06-18T18:25:14.941668",
+      "intent_analysis": {
+        "intent_signals": [],
+        "priority": "Low",
+        "score": 0
+      }
+    }
+  ],
+  "total": 10
+}
+Found 10 live tweets
+✅ Live tweets API endpoint test passed
+.
+=== Testing Cached Tweets API Endpoint ===
+Found 2 cached tweets
+✅ Cached tweets API endpoint test passed
+.
+=== Testing Startup News API Endpoint ===
+Found 3 startup news items
+✅ Startup news API endpoint test passed
+.
+=== Testing Market Data API Endpoint ===
+Found 3 market data items
+✅ Market data API endpoint test passed
+.
+=== Testing Dashboard Stats API Endpoint ===
+Dashboard stats data: {'total_leads': 4, 'high_priority_leads': 2, 'new_leads_today': 3, 'avg_lead_score': 8.2, 'total_signals_detected': 45, 'active_campaigns': 8}
+✅ Dashboard stats API endpoint test passed
+.
+=== Testing Content Analysis API Endpoint ===
+Content analysis result: {'intent_signals': [{'signal': 'CRM Migration', 'confidence': 1, 'reasoning': 'The company explicitly mentions that they are looking to upgrade their CRM system.'}, {'signal': 'Sales Tech Stack Evaluation', 'confidence': 0.9, 'reasoning': 'The company is seeking recommendations for enterprise solutions, indicating they are evaluating their sales tech stack.'}, {'signal': 'Sales Analytics', 'confidence': 0.8, 'reasoning': 'The company is specifically looking for a CRM solution with strong analytics capabilities.'}, {'signal': 'Enterprise Sales', 'confidence': 0.7, 'reasoning': "The company's mention of needing an enterprise solution suggests they are involved in enterprise sales."}, {'signal': 'SaaS Growth', 'confidence': 0.6, 'reasoning': "The company's need to upgrade their CRM system to support a growing sales team indicates they are experiencing growth."}], 'priority': 'High', 'score': 8}
+✅ Content analysis API endpoint test passed
+.
+=== Testing Fallback Data System ===
+Testing fallback for /leads...
+Testing fallback for /live-tweets...
+Testing fallback for /cached-tweets...
+Testing fallback for /startup-news...
+Testing fallback for /market-data...
+Testing fallback for /stats...
+✅ Fallback data system test passed
+.
+----------------------------------------------------------------------
+Ran 10 tests in 91.222s
+
+OK
