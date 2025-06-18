@@ -14,7 +14,6 @@ from datetime import datetime, timedelta
 import json
 import requests
 import httpx
-from emergentintegrations import ChatCompletionAI, ModelName
 from openai import OpenAI
 
 ROOT_DIR = Path(__file__).parent
@@ -29,9 +28,8 @@ db = client[os.environ['DB_NAME']]
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
 TWITTER_BEARER_TOKEN = os.environ.get('TWITTER_BEARER_TOKEN')
 
-# Initialize OpenAI and AI clients
+# Initialize OpenAI client
 openai_client = OpenAI(api_key=OPENAI_API_KEY) if OPENAI_API_KEY else None
-ai_client = ChatCompletionAI(api_key=OPENAI_API_KEY, model_name=ModelName.OPENAI_GPT4O) if OPENAI_API_KEY else None
 
 # Create the main app
 app = FastAPI(title="Growth Signals API", version="1.0.0")
@@ -230,7 +228,7 @@ FALLBACK_TWEETS = [
 # Utility Functions
 async def analyze_content_with_ai(content: str, context: str = "") -> Dict[str, Any]:
     """Analyze content for intent signals using AI"""
-    if not ai_client:
+    if not openai_client:
         # Fallback analysis
         return {
             "intent_signals": [
@@ -256,7 +254,12 @@ async def analyze_content_with_ai(content: str, context: str = "") -> Dict[str, 
         Focus on signals related to: fundraising, hiring, sales tech adoption, revenue challenges, expansion plans.
         """
         
-        response = ai_client.chat_completion(messages=[{"role": "user", "content": prompt}])
+        response = openai_client.chat.completions.create(
+            model="gpt-4",
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=500,
+            temperature=0.3
+        )
         
         # Parse AI response
         try:
