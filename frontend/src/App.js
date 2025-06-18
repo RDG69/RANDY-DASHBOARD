@@ -76,11 +76,30 @@ const Dashboard = () => {
   const loadTweets = async () => {
     try {
       setTweetsLoading(true);
-      const response = await axios.get(`${API}/live-tweets`);
-      setTweets(response.data.tweets || []);
+      
+      // First load cached tweets for instant display
+      try {
+        const cachedResponse = await axios.get(`${API}/cached-tweets`);
+        setTweets(cachedResponse.data.tweets || []);
+        setTweetsLoading(false); // Show cached data immediately
+      } catch (error) {
+        console.error("Failed to load cached tweets:", error);
+      }
+      
+      // Then load live tweets in background
+      setTimeout(async () => {
+        try {
+          const liveResponse = await axios.get(`${API}/live-tweets`);
+          if (liveResponse.data.tweets && liveResponse.data.tweets.length > 0) {
+            setTweets(liveResponse.data.tweets);
+          }
+        } catch (error) {
+          console.error("Failed to load live tweets:", error);
+        }
+      }, 2000); // Wait 2 seconds before loading live data
+      
     } catch (error) {
       console.error("Error loading tweets:", error);
-    } finally {
       setTweetsLoading(false);
     }
   };
