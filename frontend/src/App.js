@@ -618,6 +618,33 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {/* GENERATE MORE Button - Center Stage */}
+        <div className="text-center mb-6">
+          <button
+            onClick={handleGenerateMore}
+            disabled={generating}
+            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-bold text-lg rounded-xl shadow-lg hover:from-purple-700 hover:to-purple-800 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            {generating ? (
+              <>
+                <Activity className="w-6 h-6 mr-3 animate-spin" />
+                GENERATING MORE PROSPECTS...
+              </>
+            ) : (
+              <>
+                <ArrowUpRight className="w-6 h-6 mr-3" />
+                🎯 GENERATE MORE PROSPECTS
+              </>
+            )}
+          </button>
+          <p className="text-sm text-gray-600 mt-2">
+            {generating 
+              ? "Finding new high-intent prospects based on your criteria..."
+              : "Click to discover more prospects matching your current search and filters"
+            }
+          </p>
+        </div>
       </div>
 
       {loading && (
