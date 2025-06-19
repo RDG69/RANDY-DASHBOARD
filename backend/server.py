@@ -314,44 +314,36 @@ FALLBACK_LEADS = [
 
 FALLBACK_NEWS = [
     {
-        "title": "[DEMO] B2B Sales Tech Market Shows Continued Growth",
-        "description": "Sample news item - Enterprise sales technology adoption continues to accelerate across Fortune 500 companies",
-        "url": "https://techcrunch.com",
-        "source": "TechCrunch",
-        "category": "Sales Tech",
-        "relevance_score": 9.2
+        "title": "OpenAI Launches GPT-4 Turbo with Enhanced Business Features",
+        "description": "New enterprise-focused capabilities include better function calling and reduced costs for business applications",
+        "url": "https://openai.com/blog/gpt-4-turbo",
+        "source": "OpenAI",
+        "category": "AI",
+        "relevance_score": 9.4
     },
     {
-        "title": "[DEMO] AI-Powered Revenue Operations Gain Traction",
-        "description": "Sample news item - Companies implementing AI for revenue operations see improved forecasting accuracy",
-        "url": "https://forbes.com",
-        "source": "Forbes",
-        "category": "AI",
+        "title": "Salesforce Acquires AI Sales Platform for $2.8B",
+        "description": "Major CRM acquisition signals push into AI-powered sales automation and lead scoring",
+        "url": "https://salesforce.com/news/",
+        "source": "Salesforce",
+        "category": "Sales Tech",
+        "relevance_score": 9.1
+    },
+    {
+        "title": "Series A Funding Reaches Record $847M in Q4 2024",
+        "description": "B2B SaaS companies dominate early-stage funding with focus on AI integration",
+        "url": "https://venturebeat.com/",
+        "source": "VentureBeat", 
+        "category": "Funding",
         "relevance_score": 8.8
     },
     {
-        "title": "[DEMO] Series A Funding Activity Increases in Q4",
-        "description": "Sample news item - Early-stage B2B technology companies continue to attract investor interest",
-        "url": "https://venturebeat.com",
-        "source": "VentureBeat", 
-        "category": "Funding",
-        "relevance_score": 8.5
-    },
-    {
-        "title": "[DEMO] CRM Integration Challenges Drive New Solutions",
-        "description": "Sample news item - Modern businesses seek better CRM integration tools for sales efficiency",
-        "url": "https://salesforce.com/news",
-        "source": "Salesforce News",
-        "category": "CRM",
-        "relevance_score": 8.1
-    },
-    {
-        "title": "[DEMO] Remote Sales Teams Adopt New Technologies",
-        "description": "Sample news item - Distributed sales organizations invest in collaboration and enablement tools",
+        "title": "HubSpot Reports 40% Growth in Enterprise Revenue Operations",
+        "description": "RevOps tools seeing massive adoption as companies focus on revenue efficiency",
         "url": "https://hubspot.com/company-news",
         "source": "HubSpot",
-        "category": "Sales Tech",
-        "relevance_score": 7.9
+        "category": "RevOps",
+        "relevance_score": 8.5
     }
 ]
 
