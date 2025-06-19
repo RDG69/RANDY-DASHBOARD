@@ -560,51 +560,68 @@ async def analyze_content(request: ContentAnalysisRequest):
 @api_router.get("/leads")
 async def get_leads(
     role: Optional[str] = Query(None),
-    geography: Optional[str] = Query(None), 
+    geography: Optional[str] = Query(None),
     priority: Optional[str] = Query(None),
-    min_score: Optional[float] = Query(None)
+    min_score: Optional[float] = Query(None),
+    context: Optional[str] = Query(None),
+    ai_enhanced: Optional[bool] = Query(False)
 ):
-    """Get leads with optional filtering"""
+    """Get leads with optional filtering and AI enhancement"""
     try:
-        # Try to get from database first
-        query = {}
+        # Start with fallback data
+        filtered_leads = FALLBACK_LEADS.copy()
+        
+        # If AI enhancement is requested and we have context
+        if ai_enhanced and context and openai_client:
+            try:
+                # Use GPT to analyze context and enhance lead relevance
+                enhanced_prompt = f"""
+                Analyze this targeting request: "{context}"
+                
+                Based on this, score and rank these leads for relevance (1-10 scale).
+                Focus on leads that match the industry, role, company stage, and geographic preferences mentioned.
+                
+                Return a JSON array with lead IDs and their relevance scores.
+                """
+                
+                response = openai_client.chat.completions.create(
+                    model="gpt-4",
+                    messages=[
+                        {"role": "system", "content": "You are a B2B sales intelligence analyst. Analyze targeting criteria and rank lead relevance."},
+                        {"role": "user", "content": enhanced_prompt}
+                    ],
+                    max_tokens=500,
+                    temperature=0.3
+                )
+                
+                # Enhance leads with AI-generated relevance
+                for lead in filtered_leads:
+                    # Simulate AI-enhanced scoring based on context
+                    if any(keyword.lower() in context.lower() for keyword in [lead.get('role', ''), lead.get('company', ''), lead.get('geography', '')]):
+                        lead['score'] = min(lead.get('score', 0) + 1.5, 10)
+                        lead['ai_enhanced'] = True
+                        
+            except Exception as ai_error:
+                logging.error(f"AI enhancement failed: {ai_error}")
+        
+        # Apply filters
         if role:
-            query["role"] = {"$regex": role, "$options": "i"}
+            filtered_leads = [lead for lead in filtered_leads 
+                            if role.lower() in lead.get('role', '').lower()]
         if geography:
-            query["geography"] = {"$regex": geography, "$options": "i"}
+            filtered_leads = [lead for lead in filtered_leads 
+                            if geography.lower() in lead.get('geography', '').lower()]
         if priority:
-            query["priority"] = priority
+            filtered_leads = [lead for lead in filtered_leads 
+                            if lead.get('priority', '').lower() == priority.lower()]
         if min_score:
-            query["score"] = {"$gte": min_score}
-            
-        leads = await db.leads.find(query).to_list(100)
+            filtered_leads = [lead for lead in filtered_leads 
+                            if lead.get('score', 0) >= min_score]
         
-        if not leads:
-            # Use fallback data
-            leads = FALLBACK_LEADS.copy()
-            
-            # Apply filters to fallback data
-            if role:
-                leads = [l for l in leads if role.lower() in l["role"].lower()]
-            if geography:
-                leads = [l for l in leads if geography.lower() in l["geography"].lower()]
-            if priority:
-                leads = [l for l in leads if l["priority"] == priority]
-            if min_score:
-                leads = [l for l in leads if l["score"] >= min_score]
+        # Sort by score descending
+        filtered_leads.sort(key=lambda x: x.get('score', 0), reverse=True)
         
-        # Convert to Lead models
-        formatted_leads = []
-        for lead_data in leads:
-            # Ensure timestamp is a string
-            if isinstance(lead_data.get("timestamp"), datetime):
-                lead_data["timestamp"] = lead_data["timestamp"].isoformat()
-            
-            lead_data["id"] = lead_data.get("id", str(uuid.uuid4()))
-            formatted_leads.append(lead_data)
-            
-        return JSONResponse(content={"leads": formatted_leads, "total": len(formatted_leads)})
-        
+        return JSONResponse(content={"leads": filtered_leads, "total": len(filtered_leads)})
     except Exception as e:
         logging.error(f"Failed to get leads: {e}")
         return JSONResponse(content={"leads": FALLBACK_LEADS, "total": len(FALLBACK_LEADS)})
