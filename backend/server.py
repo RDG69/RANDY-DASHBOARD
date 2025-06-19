@@ -53,18 +53,17 @@ class CustomJSONEncoder(json.JSONEncoder):
 
 # Intent Signals Configuration
 INTENT_SIGNALS = [
-    "Series A Fundraising", "Series B Fundraising", "Seed Funding",
-    "VP Sales Hiring", "CRO Hiring", "RevOps Hiring", "CMO Hiring",
-    "Sales Tech Stack Evaluation", "CRM Migration", "Sales Enablement",
-    "Pipeline Anxiety", "Revenue Plateau", "GTM Expansion",
-    "International Expansion", "Product-Market Fit", "Sales Process Optimization",
-    "Lead Generation", "Customer Acquisition", "Churn Reduction",
-    "AI Adoption", "Digital Transformation", "Growth Strategy",
-    "Market Expansion", "Competitive Analysis", "Revenue Operations",
-    "Sales Analytics", "Customer Success", "Marketing Automation",
-    "B2B Sales", "Enterprise Sales", "SaaS Growth",
-    "Sales Team Scaling", "Revenue Growth Challenges", "Go-to-Market Strategy",
-    "Sales Consultant Needed", "Growth Consultant Search", "Revenue Optimization"
+    "Series A Follow-On Needed", "Series B Preparation", "Seed to Series A Transition",
+    "Post-Funding Sales Scaling", "CRO Hiring Urgency", "VP Sales Hiring",
+    "Pipeline Anxiety", "Revenue Plateau", "Customer Acquisition Cost Issues",
+    "GTM Strategy Overhaul", "Sales Process Optimization", "Revenue Operations Setup",
+    "Product-Market Fit to Scale", "Sales Team Scaling", "International Expansion",
+    "Enterprise Sales Transition", "Revenue Growth Acceleration", "Sales Consultant Search",
+    "CRM Implementation", "Sales Efficiency Issues", "Growth Consultant Needed",
+    "Funding Preparation Sales Readiness", "ARR Growth Stagnation", "Pipeline Generation Issues",
+    "Sales Cycle Too Long", "Lead Conversion Problems", "Territory Expansion Planning",
+    "Sales Enablement Gaps", "Quota Attainment Issues", "Channel Partner Strategy",
+    "Inside Sales Scaling", "Outbound Strategy Development", "Inbound Lead Qualification"
 ]
 
 # Data Models
