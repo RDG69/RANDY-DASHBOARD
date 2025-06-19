@@ -201,15 +201,18 @@ frontend:
 
   - task: "Live Twitter Signals Feed"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Real-time Twitter signals panel with intent analysis, engagement metrics, and relevance scoring"
+      - working: false
+        agent: "testing"
+        comment: "Unable to test the Twitter signals feed due to preview URL limitations. The backend API is returning tweet data correctly when accessed directly."
 
   - task: "Market Data Widget"
     implemented: true
