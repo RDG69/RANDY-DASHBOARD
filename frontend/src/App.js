@@ -155,25 +155,28 @@ const Dashboard = () => {
     return () => clearTimeout(timeoutId);
   }, [filters]);
 
-  // Handle custom target analysis
-  const handleCustomTargetAnalysis = async () => {
-    if (!customTarget.trim()) return;
+  // Handle smart analysis of targeting criteria
+  const handleSmartAnalysis = async () => {
+    if (!searchTerm.trim()) return;
     
     try {
-      setLoading(true);
-      // Trigger re-analysis with custom target
+      setGenerating(true);
+      // Trigger analysis with search term
       const response = await axios.post(`${API}/analyze-content`, {
-        content: `Targeting ${customTarget}`,
-        company_context: "Custom target analysis"
+        content: `Smart targeting: ${searchTerm}`,
+        company_context: "Smart targeting analysis"
       });
       
-      // Reload leads with new analysis
-      await loadLeads();
-      await loadTweets();
+      // Reload all relevant data
+      await Promise.all([
+        loadLeads(),
+        loadTweets(),
+        loadNews()
+      ]);
     } catch (error) {
-      console.error("Error analyzing custom target:", error);
+      console.error("Error in smart analysis:", error);
     } finally {
-      setLoading(false);
+      setGenerating(false);
     }
   };
 
