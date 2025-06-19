@@ -33,16 +33,18 @@ const App = () => {
       setTweetsLoading(true);
       
       // Load all data in parallel
-      const [leadsRes, tweetsRes, newsRes, statsRes] = await Promise.all([
+      const [leadsRes, tweetsRes, newsRes, dealsRes, statsRes] = await Promise.all([
         axios.get(`${API}/leads`),
         axios.get(`${API}/cached-tweets`),
         axios.get(`${API}/startup-news`),
+        axios.get(`${API}/deals`),
         axios.get(`${API}/stats`)
       ]);
 
       setLeads(leadsRes.data.leads || []);
       setTweets(tweetsRes.data.tweets || []);
       setNews(newsRes.data.news || []);
+      setDeals(dealsRes.data.deals || []);
       setStats(statsRes.data);
       
     } catch (error) {
