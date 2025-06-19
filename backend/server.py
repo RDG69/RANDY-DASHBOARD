@@ -443,40 +443,24 @@ async def analyze_content_with_ai(content: str, context: str = "") -> Dict[str, 
     
     try:
         prompt = f"""
-        You are a B2B sales intelligence analyst. Analyze the following social media content for genuine business growth intent signals.
+        Analyze this B2B content for sales intent signals: "{content}"
 
-        Content: "{content}"
-        Context: {context}
+        Available signals: Series A Follow-On Needed, CRO Hiring Urgency, VP Sales Hiring, Pipeline Anxiety, Revenue Plateau, GTM Strategy Overhaul, Sales Team Scaling, International Expansion, Product-Market Fit to Scale, Revenue Growth Acceleration
 
-        ONLY detect signals if there are CLEAR, EXPLICIT indicators. Do not force signals where they don't exist.
-
-        Available signals: {', '.join(INTENT_SIGNALS)}
-
-        Rules:
-        1. Only detect signals with HIGH CONFIDENCE (>0.7)
-        2. Look for explicit mentions of: hiring executives, fundraising, sales challenges, tech stack changes
-        3. Ignore: personal fundraising, political content, charity, non-business content
-        4. Score 0 if content is clearly not business-related
-        5. Be conservative - it's better to miss a signal than create false positives
-
-        Return ONLY a JSON object:
+        Return JSON only:
         {{
-            "intent_signals": [
-                {{"signal": "signal_name", "confidence": 0.0-1.0, "reasoning": "clear_explanation"}}
-            ],
+            "intent_signals": [{{"signal": "signal_name", "confidence": 0.0-1.0, "reasoning": "brief_reason"}}],
             "priority": "High/Medium/Low",
             "score": 0-10,
             "relevance_score": 0-10
         }}
-
-        If content is not business-related, return: {{"intent_signals": [], "priority": "Low", "score": 0, "relevance_score": 0}}
         """
         
         response = openai_client.chat.completions.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=300,
-            temperature=0.1  # Lower temperature for more consistent results
+            max_tokens=150,  # Reduced from 300
+            temperature=0.1
         )
         
         # Parse AI response
