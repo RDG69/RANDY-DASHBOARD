@@ -250,18 +250,18 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Main Content Grid - Leads and Tweets */}
+              {/* Main Content Grid - Leads and GTM Signals */}
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                   
                   {/* Leads Section (2/3 width) */}
                   <div className="lg:col-span-2">
-                    <div className="bg-white rounded-lg shadow">
+                    <div className="bg-white rounded-lg shadow h-full">
                       <div className="px-6 py-4 border-b border-gray-200">
                         <h2 className="text-lg font-semibold text-gray-900">High-Intent Prospects</h2>
                         <p className="text-sm text-gray-500">Companies showing growth signals {targetingInput && `for "${targetingInput}"`}</p>
                       </div>
-                      <div className="overflow-x-auto">
+                      <div className="overflow-x-auto" style={{minHeight: "600px"}}>
                         {loading ? (
                           <div className="p-6">
                             <div className="space-y-4">
@@ -359,17 +359,17 @@ const App = () => {
                     </div>
                   </div>
 
-                  {/* Live Tweets (1/3 width, flush and scrollable) */}
+                  {/* Live GTM Signals (1/3 width, flush and full height) */}
                   <div className="lg:col-span-1">
-                    <div className="bg-white rounded-lg shadow h-full">
+                    <div className="bg-white rounded-lg shadow" style={{minHeight: "600px"}}>
                       <div className="px-6 py-4 border-b border-gray-200">
                         <h2 className="text-lg font-semibold text-gray-900">Live GTM Signals</h2>
                         <p className="text-sm text-gray-500">Latest relevant activity {targetingInput && `for "${targetingInput.slice(0, 30)}..."`}</p>
                       </div>
-                      <div className="h-96 overflow-y-auto p-4 space-y-3">
+                      <div className="overflow-y-auto p-4 space-y-3" style={{height: "550px"}}>
                         {tweetsLoading ? (
                           <div className="space-y-3">
-                            {[1,2,3,4,5,6].map((i) => (
+                            {[1,2,3,4,5,6,7,8,9,10].map((i) => (
                               <div key={i} className="border border-gray-200 rounded-lg p-3 animate-pulse">
                                 <div className="flex items-start space-x-2 mb-2">
                                   <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
@@ -385,7 +385,7 @@ const App = () => {
                               </div>
                             ))}
                           </div>
-                        ) : tweets.filter(tweet => tweet.relevance_score > 4).slice(0, 10).map((tweet) => (
+                        ) : tweets.filter(tweet => tweet.relevance_score > 4).slice(0, 15).map((tweet) => (
                           <div key={tweet.id} className="border border-gray-200 rounded-lg p-3 hover:shadow-sm transition-shadow">
                             <div className="flex items-start justify-between mb-2">
                               <div className="flex items-center space-x-2">
@@ -423,6 +423,94 @@ const App = () => {
                           </div>
                         ))}
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Get More Button with PDF Prompt */}
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+                <div className="text-center">
+                  <button
+                    onClick={handleGetMore}
+                    disabled={analyzing}
+                    className="inline-flex items-center px-8 py-3 bg-purple-600 text-white font-bold text-lg rounded-lg shadow-lg hover:bg-purple-700 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                  >
+                    {analyzing ? (
+                      <>
+                        <Activity className="w-5 h-5 mr-3 animate-spin" />
+                        Finding More...
+                      </>
+                    ) : (
+                      <>
+                        🔄 Get More Results
+                      </>
+                    )}
+                  </button>
+                  <p className="text-sm text-gray-500 mt-2">
+                    Refresh with new prospects and signals matching your criteria
+                  </p>
+                </div>
+              </div>
+
+              {/* PDF Prompt Modal */}
+              {showPdfPrompt && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                  <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">💾 Save Current Results?</h3>
+                    <p className="text-gray-600 mb-6">
+                      Would you like to save your current prospect results as a PDF before getting new data?
+                    </p>
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => handlePdfPromptResponse(true)}
+                        className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700"
+                      >
+                        📄 Yes, Save PDF First
+                      </button>
+                      <button
+                        onClick={() => handlePdfPromptResponse(false)}
+                        className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50"
+                      >
+                        🔄 Just Refresh
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-3 text-center">
+                      PDF will be optimized for single-page printing
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Deals Section */}
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+                <div className="bg-white rounded-lg shadow">
+                  <div className="px-6 py-4 border-b border-gray-200">
+                    <h2 className="text-lg font-semibold text-gray-900">Relevant Deals</h2>
+                    <p className="text-sm text-gray-500">M&A, financing, and strategic announcements {targetingInput && `related to "${targetingInput}"`}</p>
+                  </div>
+                  <div className="p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {deals.slice(0, 6).map((deal, index) => (
+                        <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                          <div className="flex items-start justify-between mb-2">
+                            <div className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              deal.type === 'M&A' ? 'bg-red-100 text-red-800' :
+                              deal.type === 'Financing' ? 'bg-green-100 text-green-800' :
+                              'bg-blue-100 text-blue-800'
+                            }`}>
+                              {deal.type}
+                            </div>
+                            <span className="text-xs text-gray-500">{deal.amount}</span>
+                          </div>
+                          <h3 className="text-sm font-medium text-gray-900 mb-2">{deal.title}</h3>
+                          <p className="text-xs text-gray-600 mb-2">{deal.description}</p>
+                          <div className="flex justify-between items-center text-xs text-gray-500">
+                            <span>{deal.company}</span>
+                            <span>{deal.relevance_score}/10</span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
