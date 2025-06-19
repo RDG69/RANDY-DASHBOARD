@@ -724,49 +724,59 @@ async def get_startup_news():
         logging.error(f"Failed to get news: {e}")
         return JSONResponse(content={"news": FALLBACK_NEWS, "total": len(FALLBACK_NEWS)})
 
+async def fetch_real_market_data():
+    """Fetch REAL market data from Yahoo Finance API"""
+    try:
+        market_data = []
+        symbols = {
+            "^IXIC": "NASDAQ",
+            "^GSPC": "S&P 500", 
+            "BTC-USD": "Bitcoin"
+        }
+        
+        for symbol, display_name in symbols.items():
+            try:
+                # Yahoo Finance API endpoint
+                url = f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
+                
+                async with httpx.AsyncClient() as client:
+                    response = await client.get(url, timeout=10.0)
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        result = data['chart']['result'][0]
+                        meta = result['meta']
+                        
+                        current_price = meta['regularMarketPrice']
+                        prev_close = meta['previousClose']
+                        change = current_price - prev_close
+                        change_percent = (change / prev_close) * 100
+                        
+                        market_data.append({
+                            "symbol": display_name,
+                            "price": round(current_price, 2),
+                            "change": round(change, 2),
+                            "change_percent": f"{'+' if change >= 0 else ''}{change_percent:.2f}%"
+                        })
+                        
+            except Exception as e:
+                logging.warning(f"Failed to fetch {symbol}: {e}")
+                continue
+        
+        return market_data
+        
+    except Exception as e:
+        logging.error(f"Market data fetch failed: {e}")
+        return []
+
 @api_router.get("/market-data")
 async def get_market_data():
-    """Get realistic financial market data"""
+    """Get REAL financial market data from Yahoo Finance"""
     try:
-        # Current realistic market values (December 2024)
-        import random
-        from datetime import datetime
-        
-        # Use current date to create some deterministic variation
-        day_seed = datetime.now().day
-        random.seed(day_seed)  # Same values for the same day
-        
-        # Current realistic base values
-        base_nasdaq = 16800.0  # More current NASDAQ level
-        base_sp500 = 4800.0    # More current S&P 500 level  
-        base_btc = 42000.0     # More current Bitcoin level
-        
-        # Add realistic daily variation (-1.5% to +1.5%)
-        nasdaq_change = random.uniform(-250, 250)
-        sp500_change = random.uniform(-70, 70)
-        btc_change = random.uniform(-1200, 1200)
-        
-        market_data = [
-            {
-                "symbol": "NASDAQ",
-                "price": round(base_nasdaq + nasdaq_change, 2),
-                "change": round(nasdaq_change, 2),
-                "change_percent": f"{'+' if nasdaq_change >= 0 else ''}{nasdaq_change/base_nasdaq*100:.2f}%"
-            },
-            {
-                "symbol": "S&P 500",
-                "price": round(base_sp500 + sp500_change, 2),
-                "change": round(sp500_change, 2),
-                "change_percent": f"{'+' if sp500_change >= 0 else ''}{sp500_change/base_sp500*100:.2f}%"
-            },
-            {
-                "symbol": "Bitcoin",
-                "price": round(base_btc + btc_change, 2),
-                "change": round(btc_change, 2),
-                "change_percent": f"{'+' if btc_change >= 0 else ''}{btc_change/base_btc*100:.2f}%"
-            }
-        ]
-        
+        market_data = await fetch_real_market_data()
+        if not market_data:
+            # If real data fails, return empty to hide widget
+            return JSONResponse(content={"market_data": []})
         return JSONResponse(content={"market_data": market_data})
         
     except Exception as e:
