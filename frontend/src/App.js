@@ -63,38 +63,47 @@ const App = () => {
       
       // Step 1: Use GPT to analyze the input and generate search strategy
       const analysisResponse = await axios.post(`${API}/analyze-content`, {
-        content: `User is targeting: "${targetingInput}". Generate relevant search keywords for Twitter API, relevant intent signals to look for, and industry context for news filtering.`,
+        content: `User is targeting: "${targetingInput}". Generate relevant search keywords for Twitter API, relevant intent signals to look for, industry context for news filtering, and deal types to focus on.`,
         company_context: "Smart targeting analysis for B2B prospecting"
       });
       
-      // Step 2: Update leads based on analysis
-      const leadsResponse = await axios.get(`${API}/leads`, {
-        params: {
-          context: targetingInput,
-          ai_enhanced: true
-        }
-      });
-      
-      // Step 3: Get relevant tweets with updated search terms
-      const twitterResponse = await axios.get(`${API}/live-tweets`, {
-        params: {
-          search_context: targetingInput,
-          ai_keywords: true
-        }
-      });
-      
-      // Step 4: Get relevant news
-      const newsResponse = await axios.get(`${API}/startup-news`, {
-        params: {
-          context: targetingInput,
-          ai_filtered: true
-        }
-      });
+      // Step 2: Update all data sections based on analysis
+      const [leadsResponse, twitterResponse, newsResponse, dealsResponse] = await Promise.all([
+        // Enhanced leads with context
+        axios.get(`${API}/leads`, {
+          params: {
+            context: targetingInput,
+            ai_enhanced: true
+          }
+        }),
+        // Enhanced tweets with AI keywords
+        axios.get(`${API}/live-tweets`, {
+          params: {
+            search_context: targetingInput,
+            ai_keywords: true
+          }
+        }),
+        // Enhanced news with context filtering
+        axios.get(`${API}/startup-news`, {
+          params: {
+            context: targetingInput,
+            ai_filtered: true
+          }
+        }),
+        // Enhanced deals with context
+        axios.get(`${API}/deals`, {
+          params: {
+            context: targetingInput,
+            ai_filtered: true
+          }
+        })
+      ]);
       
       // Update all data
       setLeads(leadsResponse.data.leads || []);
       setTweets(twitterResponse.data.tweets || []);
       setNews(newsResponse.data.news || []);
+      setDeals(dealsResponse.data.deals || []);
       
       // Update stats
       const statsResponse = await axios.get(`${API}/stats`);
@@ -114,6 +123,27 @@ const App = () => {
     } finally {
       setAnalyzing(false);
     }
+  };
+
+  const handleGetMore = () => {
+    setShowPdfPrompt(true);
+  };
+
+  const handlePdfPromptResponse = (downloadPdf) => {
+    setShowPdfPrompt(false);
+    
+    if (downloadPdf) {
+      // Show PDF instruction
+      alert("Press Ctrl+P (Cmd+P on Mac) to save current results as PDF. The page is optimized for single-page printing.");
+      setTimeout(() => {
+        window.print();
+      }, 1000);
+    }
+    
+    // Refresh data after PDF handling
+    setTimeout(() => {
+      handleSmartAnalysis();
+    }, downloadPdf ? 3000 : 0);
   };
 
   const getPriorityColor = (priority) => {
