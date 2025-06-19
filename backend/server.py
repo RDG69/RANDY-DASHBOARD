@@ -457,10 +457,11 @@ async def analyze_content_with_ai(content: str, context: str = "") -> Dict[str, 
         """
         
         response = openai_client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",  # Changed from gpt-4 for speed
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=150,  # Reduced from 300
-            temperature=0.1
+            max_tokens=100,  # Reduced further
+            temperature=0.1,
+            timeout=10  # 10 second timeout
         )
         
         # Parse AI response
