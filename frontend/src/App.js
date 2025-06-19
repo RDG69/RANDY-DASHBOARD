@@ -298,7 +298,7 @@ const Dashboard = () => {
         </div>
 
         {/* Search and Target Section */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
+        <div className="bg-white rounded-lg shadow mb-4 p-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">I am targeting</label>
@@ -309,7 +309,7 @@ const Dashboard = () => {
                   placeholder="Enter search terms..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -323,12 +323,12 @@ const Dashboard = () => {
                     placeholder="e.g., CTOs at fintech startups..."
                     value={customTarget}
                     onChange={(e) => setCustomTarget(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
                 <button
                   onClick={handleCustomTargetAnalysis}
-                  className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
                 >
                   Analyze
                 </button>
@@ -338,12 +338,12 @@ const Dashboard = () => {
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-white rounded-lg shadow mb-4 p-4">
+          <div className="flex items-center justify-between mb-3">
             <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
             <Filter className="w-5 h-5 text-gray-400" />
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <input
               type="text"
               placeholder="Role (CEO, CRO, VP Sales, Founder...)"
