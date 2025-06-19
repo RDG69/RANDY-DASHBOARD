@@ -199,7 +199,7 @@ const Dashboard = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <img src="/sbg-logo.svg" alt="SBG" className="w-10 h-8" />
+              <img src="/sbg-logo.svg" alt="Silver Birch Growth" className="w-16 h-8" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Growth Signals</h1>
                 <p className="text-xs text-gray-500">Compliments of SilverBirchGrowth.com</p>
