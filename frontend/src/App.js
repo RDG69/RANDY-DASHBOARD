@@ -551,15 +551,15 @@ const Dashboard = () => {
 
           {/* Live Tweets (1/3 width) */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow">
+            <div className="bg-white rounded-lg shadow h-full">
               <div className="px-6 py-4 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900">Live GTM Signals</h2>
                 <p className="text-sm text-gray-500">Sales, hiring & growth activity</p>
               </div>
-              <div className="p-6 space-y-4 max-h-96 overflow-y-auto">
+              <div className="p-6 space-y-4 overflow-y-auto" style={{height: "calc(100% - 100px)"}}>
                 {tweetsLoading ? (
                   <div className="space-y-4">
-                    {[1,2,3].map((i) => (
+                    {[1,2,3,4,5,6].map((i) => (
                       <div key={i} className="border border-gray-200 rounded-lg p-4 animate-pulse">
                         <div className="flex items-start space-x-3 mb-3">
                           <div className="w-8 h-8 bg-gray-200 rounded-full"></div>
