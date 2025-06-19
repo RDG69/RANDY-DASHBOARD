@@ -56,59 +56,37 @@ const App = () => {
   };
 
   const handleSmartAnalysis = async () => {
-    console.log("🚀 GO button clicked! Input:", targetingInput);
-    if (!targetingInput.trim()) {
-      console.log("❌ No input provided, returning early");
-      return;
-    }
+    console.log("🚀 SEARCHING FOR:", targetingInput);
+    if (!targetingInput.trim()) return;
     
     try {
-      console.log("🔍 Starting analysis...");
       setAnalyzing(true);
+      console.log("📡 Making API calls with context filtering...");
       
-      console.log("📡 Making API calls with context...");
-      // Fast API calls with context filtering
-      const [leadsResponse, newsResponse, dealsResponse] = await Promise.all([
-        axios.get(`${API}/leads`, {
-          params: { context: targetingInput }
-        }).then(response => {
-          console.log("✅ Leads updated:", response.data.leads.length, "leads");
-          return response;
-        }).catch(e => {
-          console.error("❌ Leads API failed:", e);
-          return { data: { leads: [] } };
-        }),
-        axios.get(`${API}/startup-news`, {
-          params: { context: targetingInput }
-        }).then(response => {
-          console.log("✅ News updated:", response.data.news.length, "items");
-          return response;
-        }).catch(e => {
-          console.error("❌ News API failed:", e);
-          return { data: { news: [] } };
-        }),
-        axios.get(`${API}/deals`, {
-          params: { context: targetingInput }
-        }).then(response => {
-          console.log("✅ Deals updated:", response.data.deals.length, "deals");
-          return response;
-        }).catch(e => {
-          console.error("❌ Deals API failed:", e);
-          return { data: { deals: [] } };
-        })
+      // Simple, fast API calls that actually work
+      const [leadsRes, tweetsRes, newsRes, dealsRes] = await Promise.all([
+        axios.get(`${API}/leads?context=${encodeURIComponent(targetingInput)}`),
+        axios.get(`${API}/cached-tweets?context=${encodeURIComponent(targetingInput)}`),
+        axios.get(`${API}/startup-news?context=${encodeURIComponent(targetingInput)}`),
+        axios.get(`${API}/deals?context=${encodeURIComponent(targetingInput)}`)
       ]);
       
-      console.log("📊 Updating UI with new data...");
-      // Update data with visual feedback
-      setLeads(leadsResponse.data.leads || []);
-      setNews(newsResponse.data.news || []);
-      setDeals(dealsResponse.data.deals || []);
+      console.log("✅ RESULTS:");
+      console.log("- Leads:", leadsRes.data.leads.length, "found");
+      console.log("- Tweets:", tweetsRes.data.tweets.length, "found");
+      console.log("- News:", newsRes.data.news.length, "found");
+      console.log("- Deals:", dealsRes.data.deals.length, "found");
       
-      console.log("🎉 Data updated successfully!");
-      console.log("📈 New scores - Leads:", leadsResponse.data.leads.slice(0,3).map(l => l.score));
+      // Update with new data
+      setLeads(leadsRes.data.leads || []);
+      setTweets(tweetsRes.data.tweets || []);
+      setNews(newsRes.data.news || []);
+      setDeals(dealsRes.data.deals || []);
+      
+      console.log("🎉 DATA UPDATED! Top lead score:", leadsRes.data.leads[0]?.score);
       
     } catch (error) {
-      console.error("💥 Error in smart analysis:", error);
+      console.error("❌ Error:", error);
     } finally {
       setAnalyzing(false);
     }
