@@ -186,15 +186,18 @@ frontend:
 
   - task: "Lead Management Interface"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Advanced lead table with filtering (role, geography, priority, score), search functionality, and action buttons"
+      - working: false
+        agent: "testing"
+        comment: "Unable to test the lead management interface due to preview URL limitations. The backend API is returning lead data correctly when accessed directly."
 
   - task: "Live Twitter Signals Feed"
     implemented: true
