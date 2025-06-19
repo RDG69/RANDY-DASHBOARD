@@ -717,89 +717,73 @@ async def get_startup_news():
         return JSONResponse(content={"news": FALLBACK_NEWS, "total": len(FALLBACK_NEWS)})
 
 async def fetch_real_market_data():
-    """Fetch REAL market data from multiple sources"""
+    """Fetch REAL market data from working APIs"""
     try:
         market_data = []
         
-        # Try Alpha Vantage API first, then Yahoo Finance alternative
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
+        # Try CoinGecko for Bitcoin (free, no API key needed)
+        try:
+            btc_url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true"
+            async with httpx.AsyncClient() as client:
+                response = await client.get(btc_url, timeout=10.0)
+                if response.status_code == 200:
+                    data = response.json()
+                    btc_price = data['bitcoin']['usd']
+                    btc_change = data['bitcoin']['usd_24h_change']
+                    
+                    market_data.append({
+                        "symbol": "Bitcoin",
+                        "price": round(btc_price, 2),
+                        "change": round(btc_change, 2),
+                        "change_percent": f"{'+' if btc_change >= 0 else ''}{btc_change:.2f}%"
+                    })
+        except Exception as e:
+            logging.warning(f"Bitcoin fetch failed: {e}")
         
-        # Use Yahoo Finance alternative endpoint
-        symbols = ["^IXIC", "^GSPC", "BTC-USD"]
+        # Try Alpha Vantage for stocks (backup - would need API key)
+        # For now, if Bitcoin fails, return empty to hide widget
         
-        for symbol in symbols:
+        # If we got Bitcoin data, try to get stock data from finnhub (free tier)
+        if market_data:
             try:
-                # Alternative: Use a different endpoint
-                url = f"https://query2.finance.yahoo.com/v1/finance/search?q={symbol}"
+                # Free tier finnhub for basic stock data
+                stock_symbols = [("IXIC", "NASDAQ"), ("SPX", "S&P 500")]
                 
-                async with httpx.AsyncClient() as client:
-                    response = await client.get(url, headers=headers, timeout=5.0)
-                    if response.status_code == 200:
-                        data = response.json()
-                        # Process the response
-                        continue
-                        
+                for symbol, name in stock_symbols:
+                    stock_url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token=demo"
+                    async with httpx.AsyncClient() as client:
+                        response = await client.get(stock_url, timeout=5.0)
+                        if response.status_code == 200:
+                            data = response.json()
+                            if 'c' in data:  # current price
+                                current = data['c']
+                                prev_close = data['pc']
+                                change = current - prev_close
+                                change_percent = (change / prev_close) * 100
+                                
+                                market_data.append({
+                                    "symbol": name,
+                                    "price": round(current, 2),
+                                    "change": round(change, 2),
+                                    "change_percent": f"{'+' if change >= 0 else ''}{change_percent:.2f}%"
+                                })
             except Exception as e:
-                continue
-        
-        # For now, use live-ish data that updates every hour
-        import time
-        hour_seed = int(time.time() // 3600)  # Changes every hour
-        
-        # Base on actual market trends
-        import random
-        random.seed(hour_seed)
-        
-        # Current realistic ranges based on recent market data
-        nasdaq_base = 16850.0 + random.uniform(-200, 200)
-        sp500_base = 4820.0 + random.uniform(-50, 50)  
-        btc_base = 97500.0 + random.uniform(-3000, 3000)  # Current BTC range
-        
-        nasdaq_change = random.uniform(-150, 150)
-        sp500_change = random.uniform(-40, 40)
-        btc_change = random.uniform(-2000, 2000)
-        
-        market_data = [
-            {
-                "symbol": "NASDAQ",
-                "price": round(nasdaq_base + nasdaq_change, 2),
-                "change": round(nasdaq_change, 2),
-                "change_percent": f"{'+' if nasdaq_change >= 0 else ''}{nasdaq_change/nasdaq_base*100:.2f}%"
-            },
-            {
-                "symbol": "S&P 500",
-                "price": round(sp500_base + sp500_change, 2),
-                "change": round(sp500_change, 2),
-                "change_percent": f"{'+' if sp500_change >= 0 else ''}{sp500_change/sp500_base*100:.2f}%"
-            },
-            {
-                "symbol": "Bitcoin",
-                "price": round(btc_base + btc_change, 2),
-                "change": round(btc_change, 2),
-                "change_percent": f"{'+' if btc_change >= 0 else ''}{btc_change/btc_base*100:.2f}%"
-            }
-        ]
+                logging.warning(f"Stock data fetch failed: {e}")
         
         return market_data
         
     except Exception as e:
-        logging.error(f"Market data fetch failed: {e}")
+        logging.error(f"Market data fetch completely failed: {e}")
         return []
 
 @api_router.get("/market-data")
 async def get_market_data():
-    """Get REAL financial market data from Yahoo Finance"""
+    """Get REAL market data or return empty to hide widget"""
     try:
         market_data = await fetch_real_market_data()
-        if not market_data:
-            # If real data fails, return empty to hide widget
-            return JSONResponse(content={"market_data": []})
         return JSONResponse(content={"market_data": market_data})
-        
     except Exception as e:
-        logging.error(f"Failed to get market data: {e}")
+        logging.error(f"Market data endpoint failed: {e}")
         return JSONResponse(content={"market_data": []})
 
 async def fetch_real_market_data():
