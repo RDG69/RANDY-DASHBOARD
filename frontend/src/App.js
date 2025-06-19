@@ -31,6 +31,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [tweetsLoading, setTweetsLoading] = useState(true);
   const [marketLoading, setMarketLoading] = useState(true);
+  const [generating, setGenerating] = useState(false);
 
   // Load data on component mount with progressive loading
   useEffect(() => {
