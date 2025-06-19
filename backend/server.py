@@ -1031,30 +1031,38 @@ async def get_startup_news(
     context: Optional[str] = Query(None),
     ai_filtered: Optional[bool] = Query(False)
 ):
-    """Get startup news with AI filtering"""
+    """Get startup news with filtering"""
     try:
         news_items = FALLBACK_NEWS.copy()
         
-        # If AI filtering is requested and we have context
-        if ai_filtered and context and openai_client:
-            try:
-                # Use GPT to analyze and score news relevance
-                for item in news_items:
-                    # Simulate AI relevance scoring based on context
-                    context_keywords = context.lower().split()
-                    item_text = f"{item.get('title', '')} {item.get('description', '')}".lower()
-                    
-                    relevance_boost = 0
-                    for keyword in context_keywords:
-                        if keyword in item_text:
-                            relevance_boost += 1
-                    
-                    if relevance_boost > 0:
-                        item['relevance_score'] = min(item.get('relevance_score', 5) + relevance_boost, 10)
-                        item['context_match'] = True
-                        
-            except Exception as ai_error:
-                logging.error(f"AI news filtering failed: {ai_error}")
+        # If we have context, filter and boost relevance 
+        if context:
+            context_lower = context.lower()
+            
+            for item in news_items:
+                item_text = f"{item.get('title', '')} {item.get('description', '')}".lower()
+                
+                # Check for keyword matches
+                context_words = context_lower.split()
+                matches = 0
+                
+                for word in context_words:
+                    if word in item_text:
+                        matches += 1
+                
+                # Boost relevance based on matches
+                if matches > 0:
+                    item['relevance_score'] = min(item.get('relevance_score', 5) + matches * 0.5, 10)
+                    item['context_match'] = True
+                
+                # Specific boosts for key terms
+                if any(term in context_lower for term in ['cro', 'sales', 'revenue']):
+                    if any(word in item_text for word in ['sales', 'cro', 'revenue']):
+                        item['relevance_score'] = min(item.get('relevance_score', 5) + 1, 10)
+                
+                if any(term in context_lower for term in ['funding', 'series a', 'series b']):
+                    if any(word in item_text for word in ['funding', 'series', 'raised']):
+                        item['relevance_score'] = min(item.get('relevance_score', 5) + 1, 10)
         
         # Sort by relevance score
         news_items.sort(key=lambda x: x.get('relevance_score', 0), reverse=True)
@@ -1069,30 +1077,38 @@ async def get_deals(
     context: Optional[str] = Query(None),
     ai_filtered: Optional[bool] = Query(False)
 ):
-    """Get relevant deals with AI filtering"""
+    """Get relevant deals with filtering"""
     try:
         deals = FALLBACK_DEALS.copy()
         
-        # If AI filtering is requested and we have context
-        if ai_filtered and context and openai_client:
-            try:
-                # Use GPT to analyze and score deal relevance
-                for deal in deals:
-                    # Simulate AI relevance scoring based on context
-                    context_keywords = context.lower().split()
-                    deal_text = f"{deal.get('title', '')} {deal.get('description', '')}".lower()
-                    
-                    relevance_boost = 0
-                    for keyword in context_keywords:
-                        if keyword in deal_text:
-                            relevance_boost += 1
-                    
-                    if relevance_boost > 0:
-                        deal['relevance_score'] = min(deal.get('relevance_score', 5) + relevance_boost, 10)
-                        deal['context_match'] = True
-                        
-            except Exception as ai_error:
-                logging.error(f"AI deal filtering failed: {ai_error}")
+        # If we have context, filter and boost relevance
+        if context:
+            context_lower = context.lower()
+            
+            for deal in deals:
+                deal_text = f"{deal.get('title', '')} {deal.get('description', '')}".lower()
+                
+                # Check for keyword matches
+                context_words = context_lower.split()
+                matches = 0
+                
+                for word in context_words:
+                    if word in deal_text:
+                        matches += 1
+                
+                # Boost relevance based on matches
+                if matches > 0:
+                    deal['relevance_score'] = min(deal.get('relevance_score', 5) + matches * 0.5, 10)
+                    deal['context_match'] = True
+                
+                # Specific boosts for key terms
+                if any(term in context_lower for term in ['sales', 'gtm', 'revenue']):
+                    if any(word in deal_text for word in ['sales', 'gtm', 'revenue']):
+                        deal['relevance_score'] = min(deal.get('relevance_score', 5) + 1, 10)
+                
+                if any(term in context_lower for term in ['saas', 'software', 'platform']):
+                    if any(word in deal_text for word in ['saas', 'platform', 'software']):
+                        deal['relevance_score'] = min(deal.get('relevance_score', 5) + 1, 10)
         
         # Sort by relevance score
         deals.sort(key=lambda x: x.get('relevance_score', 0), reverse=True)
