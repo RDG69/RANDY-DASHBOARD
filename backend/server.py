@@ -621,13 +621,14 @@ async def get_leads(
                 """
                 
                 response = openai_client.chat.completions.create(
-                    model="gpt-4",
+                    model="gpt-3.5-turbo",  # Changed for speed
                     messages=[
                         {"role": "system", "content": "You are a B2B sales intelligence analyst. Analyze targeting criteria and rank lead relevance."},
                         {"role": "user", "content": enhanced_prompt}
                     ],
-                    max_tokens=500,
-                    temperature=0.3
+                    max_tokens=200,  # Reduced
+                    temperature=0.3,
+                    timeout=8  # 8 second timeout
                 )
                 
                 # Enhance leads with AI-generated relevance
