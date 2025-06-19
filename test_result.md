@@ -231,15 +231,18 @@ frontend:
 
   - task: "Startup News Section"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Curated startup/AI news section with relevance scores and category filtering"
+      - working: false
+        agent: "testing"
+        comment: "Unable to test the startup news section due to preview URL limitations. The backend API is returning news data correctly when accessed directly."
 
   - task: "Smart Search and Filtering"
     implemented: true
