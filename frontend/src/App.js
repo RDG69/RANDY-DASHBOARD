@@ -381,19 +381,13 @@ const Dashboard = () => {
             <Filter className="w-5 h-5 text-gray-400" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <select
+            <input
+              type="text"
+              placeholder="Role (CEO, CRO, VP Sales, Founder...)"
               value={filters.role}
               onChange={(e) => handleFilterChange("role", e.target.value)}
               className="border border-gray-300 rounded-lg px-3 py-2"
-            >
-              <option value="">All Roles</option>
-              <option value="CEO">CEO</option>
-              <option value="Founder">Founder</option>
-              <option value="COO">COO</option>
-              <option value="CMO">CMO</option>
-              <option value="CTO">CTO</option>
-              <option value="VP">VP Sales</option>
-            </select>
+            />
             
             <input
               type="text"
