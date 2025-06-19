@@ -395,18 +395,13 @@ const Dashboard = () => {
               <option value="VP">VP Sales</option>
             </select>
             
-            <select
+            <input
+              type="text"
+              placeholder="Location (city, state, country, postal code...)"
               value={filters.geography}
               onChange={(e) => handleFilterChange("geography", e.target.value)}
               className="border border-gray-300 rounded-lg px-3 py-2"
-            >
-              <option value="">All Locations</option>
-              <option value="San Francisco">San Francisco</option>
-              <option value="New York">New York</option>
-              <option value="Austin">Austin</option>
-              <option value="London">London</option>
-              <option value="Toronto">Toronto</option>
-            </select>
+            />
             
             <select
               value={filters.priority}
