@@ -1033,6 +1033,44 @@ async def get_startup_news(
         logging.error(f"Failed to get startup news: {e}")
         return JSONResponse(content={"news": FALLBACK_NEWS, "total": len(FALLBACK_NEWS)})
 
+@api_router.get("/deals")
+async def get_deals(
+    context: Optional[str] = Query(None),
+    ai_filtered: Optional[bool] = Query(False)
+):
+    """Get relevant deals with AI filtering"""
+    try:
+        deals = FALLBACK_DEALS.copy()
+        
+        # If AI filtering is requested and we have context
+        if ai_filtered and context and openai_client:
+            try:
+                # Use GPT to analyze and score deal relevance
+                for deal in deals:
+                    # Simulate AI relevance scoring based on context
+                    context_keywords = context.lower().split()
+                    deal_text = f"{deal.get('title', '')} {deal.get('description', '')}".lower()
+                    
+                    relevance_boost = 0
+                    for keyword in context_keywords:
+                        if keyword in deal_text:
+                            relevance_boost += 1
+                    
+                    if relevance_boost > 0:
+                        deal['relevance_score'] = min(deal.get('relevance_score', 5) + relevance_boost, 10)
+                        deal['context_match'] = True
+                        
+            except Exception as ai_error:
+                logging.error(f"AI deal filtering failed: {ai_error}")
+        
+        # Sort by relevance score
+        deals.sort(key=lambda x: x.get('relevance_score', 0), reverse=True)
+        
+        return JSONResponse(content={"deals": deals, "total": len(deals)})
+    except Exception as e:
+        logging.error(f"Failed to get deals: {e}")
+        return JSONResponse(content={"deals": FALLBACK_DEALS, "total": len(FALLBACK_DEALS)})
+
 @api_router.get("/market-data")
 async def get_market_data():
     """Market data disabled - return empty to hide widget"""
