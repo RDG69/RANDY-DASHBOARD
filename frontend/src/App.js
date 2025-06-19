@@ -201,7 +201,7 @@ const Dashboard = () => {
             <div className="flex items-center space-x-3">
               <img src="/sbg-logo.svg" alt="Silver Birch Growth" className="w-16 h-8" />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Growth Signals</h1>
+                <h1 className="text-xl font-bold text-gray-900">Prospecting for Intent</h1>
                 <p className="text-xs text-gray-500">Compliments of SilverBirchGrowth.com</p>
                 <a 
                   href="https://9kct1c25.drwbrdg.com/sbginsiders" 
