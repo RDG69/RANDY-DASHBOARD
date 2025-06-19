@@ -581,32 +581,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
-        {/* Call to Action */}
-        <div className="mt-8 bg-gradient-to-r from-green-600 to-green-700 rounded-lg shadow-lg">
-          <div className="px-6 py-8 text-center">
-            <h3 className="text-2xl font-bold text-white mb-2">Ready to Accelerate Your Growth?</h3>
-            <p className="text-green-100 mb-6">Get strategic sales and GTM consultation from our experts</p>
-            <div className="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
-              <a
-                href="https://silverbirchgrowth.com/contact"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-6 py-3 bg-white text-green-700 font-semibold rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <Phone className="w-5 h-5 mr-2" />
-                Schedule Consultation
-              </a>
-              <a
-                href="mailto:hello@silverbirchgrowth.com"
-                className="inline-flex items-center px-6 py-3 bg-green-800 text-white font-semibold rounded-lg hover:bg-green-900 transition-colors"
-              >
-                <Mail className="w-5 h-5 mr-2" />
-                Send Feedback
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
 
       {loading && (
