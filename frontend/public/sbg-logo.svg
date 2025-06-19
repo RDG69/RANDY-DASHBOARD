@@ -1,19 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
   <defs>
     <style>
-      .logo-text { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; }
-      .green-stripe { fill: #00D45A; }
-      .black-text { fill: #2D3748; }
+      .logo-text { font-family: 'Arial', sans-serif; font-weight: bold; }
+      .green-color { fill: #10b981; }
+      .dark-text { fill: #1f2937; }
     </style>
   </defs>
   
-  <!-- Green diagonal stripe -->
-  <polygon class="green-stripe" points="400,50 550,50 650,350 500,350"/>
+  <!-- Background circle -->
+  <circle cx="25" cy="40" r="20" class="green-color"/>
   
-  <!-- SBG Text -->
-  <text x="50" y="280" class="logo-text black-text" font-size="180">SBG</text>
+  <!-- SBG Text in circle -->
+  <text x="25" y="48" class="logo-text dark-text" font-size="14" text-anchor="middle" fill="white">SBG</text>
   
-  <!-- Additional green elements -->
-  <rect class="green-stripe" x="650" y="50" width="100" height="100"/>
-  <polygon class="green-stripe" points="650,150 750,150 750,200 700,200"/>
+  <!-- Company name -->
+  <text x="55" y="35" class="logo-text dark-text" font-size="16">Silver Birch</text>
+  <text x="55" y="52" class="logo-text green-color" font-size="16">Growth</text>
 </svg>
