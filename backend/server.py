@@ -690,13 +690,14 @@ async def get_live_tweets(
                 """
                 
                 response = openai_client.chat.completions.create(
-                    model="gpt-4",
+                    model="gpt-3.5-turbo",  # Changed for speed
                     messages=[
                         {"role": "system", "content": "You are a social media intelligence analyst. Generate effective Twitter search terms."},
                         {"role": "user", "content": keywords_prompt}
                     ],
-                    max_tokens=200,
-                    temperature=0.7
+                    max_tokens=100,  # Reduced significantly
+                    temperature=0.7,
+                    timeout=8  # 8 second timeout
                 )
                 
                 ai_search_terms = response.choices[0].message.content.strip()
