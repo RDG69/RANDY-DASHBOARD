@@ -14,11 +14,13 @@ const App = () => {
   const [leads, setLeads] = useState([]);
   const [tweets, setTweets] = useState([]);
   const [news, setNews] = useState([]);
+  const [deals, setDeals] = useState([]);
   const [stats, setStats] = useState({});
   const [targetingInput, setTargetingInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [tweetsLoading, setTweetsLoading] = useState(true);
   const [analyzing, setAnalyzing] = useState(false);
+  const [showPdfPrompt, setShowPdfPrompt] = useState(false);
 
   // Load initial data
   useEffect(() => {
