@@ -718,75 +718,10 @@ async def get_startup_news():
         logging.error(f"Failed to get news: {e}")
         return JSONResponse(content={"news": FALLBACK_NEWS, "total": len(FALLBACK_NEWS)})
 
-async def fetch_real_market_data():
-    """Fetch REAL market data from working APIs"""
-    try:
-        market_data = []
-        
-        # Try CoinGecko for Bitcoin (free, no API key needed)
-        try:
-            btc_url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true"
-            async with httpx.AsyncClient() as client:
-                response = await client.get(btc_url, timeout=10.0)
-                if response.status_code == 200:
-                    data = response.json()
-                    btc_price = data['bitcoin']['usd']
-                    btc_change = data['bitcoin']['usd_24h_change']
-                    
-                    market_data.append({
-                        "symbol": "Bitcoin",
-                        "price": round(btc_price, 2),
-                        "change": round(btc_change, 2),
-                        "change_percent": f"{'+' if btc_change >= 0 else ''}{btc_change:.2f}%"
-                    })
-        except Exception as e:
-            logging.warning(f"Bitcoin fetch failed: {e}")
-        
-        # Try Alpha Vantage for stocks (backup - would need API key)
-        # For now, if Bitcoin fails, return empty to hide widget
-        
-        # If we got Bitcoin data, try to get stock data from finnhub (free tier)
-        if market_data:
-            try:
-                # Free tier finnhub for basic stock data
-                stock_symbols = [("IXIC", "NASDAQ"), ("SPX", "S&P 500")]
-                
-                for symbol, name in stock_symbols:
-                    stock_url = f"https://finnhub.io/api/v1/quote?symbol={symbol}&token=demo"
-                    async with httpx.AsyncClient() as client:
-                        response = await client.get(stock_url, timeout=5.0)
-                        if response.status_code == 200:
-                            data = response.json()
-                            if 'c' in data:  # current price
-                                current = data['c']
-                                prev_close = data['pc']
-                                change = current - prev_close
-                                change_percent = (change / prev_close) * 100
-                                
-                                market_data.append({
-                                    "symbol": name,
-                                    "price": round(current, 2),
-                                    "change": round(change, 2),
-                                    "change_percent": f"{'+' if change >= 0 else ''}{change_percent:.2f}%"
-                                })
-            except Exception as e:
-                logging.warning(f"Stock data fetch failed: {e}")
-        
-        return market_data
-        
-    except Exception as e:
-        logging.error(f"Market data fetch completely failed: {e}")
-        return []
-
 @api_router.get("/market-data")
 async def get_market_data():
-    """Get REAL market data or return empty to hide widget"""
-    try:
-        market_data = await fetch_real_market_data()
-        return JSONResponse(content={"market_data": market_data})
-    except Exception as e:
-        logging.error(f"Market data endpoint failed: {e}")
-        return JSONResponse(content={"market_data": []})
+    """Market data disabled - return empty to hide widget"""
+    return JSONResponse(content={"market_data": []})
 
 async def fetch_real_market_data():
     """Fetch real market data from Yahoo Finance API"""
