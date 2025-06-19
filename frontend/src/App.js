@@ -61,53 +61,79 @@ const App = () => {
     try {
       setAnalyzing(true);
       
-      // Step 1: Use GPT to analyze the input and generate search strategy
-      const analysisResponse = await axios.post(`${API}/analyze-content`, {
-        content: `User is targeting: "${targetingInput}". Generate relevant search keywords for Twitter API, relevant intent signals to look for, industry context for news filtering, and deal types to focus on.`,
-        company_context: "Smart targeting analysis for B2B prospecting"
+      // Immediately load leads with basic filtering (fast response)
+      const quickLeadsResponse = await axios.get(`${API}/leads`, {
+        params: {
+          context: targetingInput,
+          ai_enhanced: false  // Start without AI for speed
+        }
       });
+      setLeads(quickLeadsResponse.data.leads || []);
       
-      // Step 2: Update all data sections based on analysis
-      const [leadsResponse, twitterResponse, newsResponse, dealsResponse] = await Promise.all([
-        // Enhanced leads with context
-        axios.get(`${API}/leads`, {
-          params: {
-            context: targetingInput,
-            ai_enhanced: true
-          }
-        }),
+      // Load other sections in parallel without waiting
+      Promise.all([
         // Enhanced tweets with AI keywords
         axios.get(`${API}/live-tweets`, {
           params: {
             search_context: targetingInput,
             ai_keywords: true
           }
+        }).then(response => {
+          setTweets(response.data.tweets || []);
+        }).catch(error => {
+          console.error("Twitter loading failed:", error);
+          // Use cached tweets as fallback
+          axios.get(`${API}/cached-tweets`).then(response => {
+            setTweets(response.data.tweets || []);
+          });
         }),
+        
         // Enhanced news with context filtering
         axios.get(`${API}/startup-news`, {
           params: {
             context: targetingInput,
             ai_filtered: true
           }
+        }).then(response => {
+          setNews(response.data.news || []);
+        }).catch(error => {
+          console.error("News loading failed:", error);
         }),
+        
         // Enhanced deals with context
         axios.get(`${API}/deals`, {
           params: {
             context: targetingInput,
             ai_filtered: true
           }
+        }).then(response => {
+          setDeals(response.data.deals || []);
+        }).catch(error => {
+          console.error("Deals loading failed:", error);
+        }),
+        
+        // Update stats
+        axios.get(`${API}/stats`).then(response => {
+          setStats(response.data);
+        }).catch(error => {
+          console.error("Stats loading failed:", error);
         })
       ]);
       
-      // Update all data
-      setLeads(leadsResponse.data.leads || []);
-      setTweets(twitterResponse.data.tweets || []);
-      setNews(newsResponse.data.news || []);
-      setDeals(dealsResponse.data.deals || []);
-      
-      // Update stats
-      const statsResponse = await axios.get(`${API}/stats`);
-      setStats(statsResponse.data);
+      // Now enhance leads with AI in background (slower)
+      setTimeout(async () => {
+        try {
+          const enhancedLeadsResponse = await axios.get(`${API}/leads`, {
+            params: {
+              context: targetingInput,
+              ai_enhanced: true
+            }
+          });
+          setLeads(enhancedLeadsResponse.data.leads || []);
+        } catch (error) {
+          console.error("AI enhancement failed:", error);
+        }
+      }, 1000);
       
     } catch (error) {
       console.error("Error in smart analysis:", error);
