@@ -255,7 +255,8 @@ test_plan:
     - "Frontend UI testing"
     - "Integration testing between frontend and backend"
     - "Real-time data flow verification"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Executive Dashboard UI"
   test_all: false
   test_priority: "high_first"
 
