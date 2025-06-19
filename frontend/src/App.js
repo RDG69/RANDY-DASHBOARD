@@ -177,6 +177,42 @@ const Dashboard = () => {
     }
   };
 
+  // Generate more data based on current filters/search
+  const handleGenerateMore = async () => {
+    try {
+      setGenerating(true);
+      
+      // Create search context from current state
+      const searchContext = [
+        searchTerm,
+        customTarget,
+        filters.role,
+        filters.geography,
+        filters.priority
+      ].filter(Boolean).join(' ');
+
+      // Trigger new analysis if we have search context
+      if (searchContext.trim()) {
+        await axios.post(`${API}/analyze-content`, {
+          content: `Generate more prospects for: ${searchContext}`,
+          company_context: "Generate more analysis"
+        });
+      }
+
+      // Reload all data to get fresh results
+      await Promise.all([
+        loadLeads(),
+        loadTweets(),
+        loadNews()
+      ]);
+
+    } catch (error) {
+      console.error("Error generating more data:", error);
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "High": return "text-red-600 bg-red-50";
