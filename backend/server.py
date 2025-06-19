@@ -627,31 +627,74 @@ async def get_leads(
         return JSONResponse(content={"leads": FALLBACK_LEADS, "total": len(FALLBACK_LEADS)})
 
 @api_router.get("/live-tweets")
-async def get_live_tweets(query: Optional[str] = Query(None)):
-    """Get live tweets with intent analysis"""
+async def get_live_tweets(
+    search_context: Optional[str] = Query(None),
+    ai_keywords: Optional[bool] = Query(False)
+):
+    """Get live tweets with AI-enhanced search"""
     try:
-        tweets = await fetch_twitter_data(query)
+        # Generate AI-enhanced search terms if requested
+        search_terms = "B2B sales OR GTM OR Series A OR revenue growth"
         
-        # Analyze tweets for intent
+        if ai_keywords and search_context and openai_client:
+            try:
+                # Use GPT to generate relevant Twitter search keywords
+                keywords_prompt = f"""
+                Generate Twitter search keywords for this targeting: "{search_context}"
+                
+                Create search terms that would find relevant tweets about:
+                - Companies/founders in this space
+                - Hiring signals and job posts
+                - Funding announcements
+                - Growth challenges and signals
+                - Industry trends and pain points
+                
+                Return 5-10 keywords/phrases separated by OR, optimized for Twitter search.
+                """
+                
+                response = openai_client.chat.completions.create(
+                    model="gpt-4",
+                    messages=[
+                        {"role": "system", "content": "You are a social media intelligence analyst. Generate effective Twitter search terms."},
+                        {"role": "user", "content": keywords_prompt}
+                    ],
+                    max_tokens=200,
+                    temperature=0.7
+                )
+                
+                ai_search_terms = response.choices[0].message.content.strip()
+                search_terms = f"{ai_search_terms} OR {search_terms}"
+                
+            except Exception as ai_error:
+                logging.error(f"AI keyword generation failed: {ai_error}")
+        
+        # Get tweets with enhanced search terms
+        tweets = await fetch_twitter_data(search_terms, 15)
         analyzed_tweets = []
-        for tweet_data in tweets:
-            # Run AI analysis on tweet content
-            analysis = await analyze_content_with_ai(tweet_data["content"])
-            tweet_data["intent_analysis"] = analysis
-            
-            # Use AI-determined relevance score
-            tweet_data["relevance_score"] = analysis.get("relevance_score", 0)
-            
-            # Only include tweets with relevance score > 3 (out of 10)
-            if tweet_data["relevance_score"] > 3:
-                analyzed_tweets.append(tweet_data)
         
-        # Sort by relevance score (highest first)
-        analyzed_tweets.sort(key=lambda x: x["relevance_score"], reverse=True)
+        for tweet in tweets:
+            if openai_client:
+                # Analyze each tweet for intent signals
+                intent_analysis = await analyze_content_with_ai(
+                    tweet['content'], 
+                    f"Twitter post by {tweet['author_name']} - analyze for B2B intent signals related to: {search_context or 'general B2B growth'}"
+                )
+                tweet['intent_analysis'] = intent_analysis
+                
+                # Boost relevance score if it matches search context
+                if search_context:
+                    context_keywords = search_context.lower().split()
+                    tweet_text = tweet['content'].lower()
+                    if any(keyword in tweet_text for keyword in context_keywords):
+                        tweet['relevance_score'] = min(tweet.get('relevance_score', 5) + 2, 10)
+                        tweet['context_match'] = True
+                        
+            analyzed_tweets.append(tweet)
         
-        # Return top 10 most relevant
-        return JSONResponse(content={"tweets": analyzed_tweets[:10], "total": len(analyzed_tweets)})
+        # Sort by relevance score
+        analyzed_tweets.sort(key=lambda x: x.get('relevance_score', 0), reverse=True)
         
+        return JSONResponse(content={"tweets": analyzed_tweets, "total": len(analyzed_tweets)})
     except Exception as e:
         logging.error(f"Failed to get live tweets: {e}")
         return JSONResponse(content={"tweets": FALLBACK_TWEETS, "total": len(FALLBACK_TWEETS)})
