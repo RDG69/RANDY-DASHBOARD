@@ -203,6 +203,14 @@ const Dashboard = () => {
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Growth Signals</h1>
                 <p className="text-xs text-gray-500">Compliments of SilverBirchGrowth.com</p>
+                <a 
+                  href="https://9kct1c25.drwbrdg.com/sbginsiders" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-xs text-green-600 hover:text-green-700 font-medium"
+                >
+                  📧 Join our Mailer to win a trip
+                </a>
               </div>
             </div>
 
