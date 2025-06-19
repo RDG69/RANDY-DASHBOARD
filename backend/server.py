@@ -637,10 +637,10 @@ async def get_cached_tweets():
     try:
         # First try to get from database
         tweets = await db.tweets.find().sort("timestamp", -1).limit(20).to_list(20)
-        if tweets:
+        if tweets and len(tweets) >= 10:
             return JSONResponse(content={"tweets": tweets, "total": len(tweets)})
         
-        # Fallback to curated high-quality B2B tweets
+        # Fallback to expanded high-quality B2B tweets (ensure 10+)
         cached_tweets = [
             {
                 "id": str(uuid.uuid4()),
@@ -671,8 +671,8 @@ async def get_cached_tweets():
                 "timestamp": datetime.utcnow().isoformat(),
                 "intent_analysis": {
                     "intent_signals": [
-                        {"signal": "Series A Fundraising", "confidence": 0.98, "reasoning": "Announces Series A completion"},
-                        {"signal": "GTM Expansion", "confidence": 0.92, "reasoning": "Plans to scale go-to-market engine"}
+                        {"signal": "Series A Follow-On Needed", "confidence": 0.98, "reasoning": "Announces Series A completion"},
+                        {"signal": "GTM Strategy Overhaul", "confidence": 0.92, "reasoning": "Plans to scale go-to-market engine"}
                     ],
                     "priority": "High",
                     "score": 9.5,
@@ -690,12 +690,183 @@ async def get_cached_tweets():
                 "timestamp": datetime.utcnow().isoformat(),
                 "intent_analysis": {
                     "intent_signals": [
-                        {"signal": "CRM Migration", "confidence": 0.94, "reasoning": "Actively seeking new CRM solution"},
+                        {"signal": "CRM Implementation", "confidence": 0.94, "reasoning": "Actively seeking new CRM solution"},
                         {"signal": "Sales Process Optimization", "confidence": 0.87, "reasoning": "Mentions complex sales processes"}
                     ],
                     "priority": "High",
                     "score": 8.8,
                     "relevance_score": 8.8
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409285934567234",
+                "content": "6 months post-Series A and our sales execution isn't where it needs to be. Looking for a world-class CRO to help us nail our GTM before Series B. #CRO #startup",
+                "author_name": "Jennifer Park",
+                "author_handle": "@jpark_founder",
+                "engagement_metrics": {"like_count": 178, "retweet_count": 42, "reply_count": 56},
+                "relevance_score": 9.0,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "CRO Hiring Urgency", "confidence": 0.96, "reasoning": "Explicitly looking for CRO"},
+                        {"signal": "Series B Preparation", "confidence": 0.88, "reasoning": "Preparing for Series B"}
+                    ],
+                    "priority": "High",
+                    "score": 9.0,
+                    "relevance_score": 9.0
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409276825347891",
+                "content": "Stuck at $2M ARR for 6 months. Our pipeline is inconsistent and sales process needs work. Time to bring in outside expertise. #pipeline #growth #consulting",
+                "author_name": "David Kim",
+                "author_handle": "@dkim_startup",
+                "engagement_metrics": {"like_count": 156, "retweet_count": 38, "reply_count": 72},
+                "relevance_score": 8.9,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "Pipeline Anxiety", "confidence": 0.93, "reasoning": "Pipeline inconsistency issues"},
+                        {"signal": "Sales Consultant Search", "confidence": 0.89, "reasoning": "Looking for outside expertise"}
+                    ],
+                    "priority": "High",
+                    "score": 8.9,
+                    "relevance_score": 8.9
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409267716238948",
+                "content": "Fresh off our $8M Series A! Now the real work begins - scaling our sales team 5x and completely rebuilding our GTM strategy. #SeriesA #scaling #GTM",
+                "author_name": "Lisa Chen",
+                "author_handle": "@lisachen_scale",
+                "engagement_metrics": {"like_count": 324, "retweet_count": 89, "reply_count": 45},
+                "relevance_score": 9.3,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "Post-Funding Sales Scaling", "confidence": 0.97, "reasoning": "Scaling sales team 5x post-funding"},
+                        {"signal": "GTM Strategy Overhaul", "confidence": 0.91, "reasoning": "Rebuilding GTM strategy"}
+                    ],
+                    "priority": "High",
+                    "score": 9.3,
+                    "relevance_score": 9.3
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409258607129005",
+                "content": "Our CAC is killing us and sales cycle is too long. Need experienced consultants to help optimize our sales process. Recommendations welcome! #CAC #sales #consulting",
+                "author_name": "Ryan Foster",
+                "author_handle": "@ryan_foster_ceo",
+                "engagement_metrics": {"like_count": 189, "retweet_count": 52, "reply_count": 94},
+                "relevance_score": 8.7,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "Customer Acquisition Cost Issues", "confidence": 0.94, "reasoning": "CAC problems mentioned explicitly"},
+                        {"signal": "Sales Consultant Search", "confidence": 0.92, "reasoning": "Actively seeking consultants"}
+                    ],
+                    "priority": "High",
+                    "score": 8.7,
+                    "relevance_score": 8.7
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409249498019062",
+                "content": "Preparing for European expansion with our Series B funding. Need to build out sales teams in London and Berlin. Looking for GTM consultants with international experience. #expansion #SeriesB",
+                "author_name": "Amanda Walsh",
+                "author_handle": "@amanda_expand",
+                "engagement_metrics": {"like_count": 267, "retweet_count": 73, "reply_count": 51},
+                "relevance_score": 8.8,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "International Expansion", "confidence": 0.95, "reasoning": "European expansion mentioned"},
+                        {"signal": "Sales Team Scaling", "confidence": 0.88, "reasoning": "Building sales teams in new markets"}
+                    ],
+                    "priority": "High",
+                    "score": 8.8,
+                    "relevance_score": 8.8
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409240388910119",
+                "content": "Series B in 9 months and we need to accelerate revenue growth. Our sales team needs strategic guidance to hit ambitious targets. #SeriesB #revenue #growth",
+                "author_name": "Carlos Martinez",
+                "author_handle": "@carlos_revenue",
+                "engagement_metrics": {"like_count": 198, "retweet_count": 44, "reply_count": 63},
+                "relevance_score": 8.6,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "Series B Preparation", "confidence": 0.92, "reasoning": "Series B timeline mentioned"},
+                        {"signal": "Revenue Growth Acceleration", "confidence": 0.89, "reasoning": "Need to accelerate revenue growth"}
+                    ],
+                    "priority": "High",
+                    "score": 8.6,
+                    "relevance_score": 8.6
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409231279801176",
+                "content": "We've found product-market fit and now need to scale sales FAST. Hiring a VP Sales and need consultants to help design our scaling strategy. #PMF #scaling #hiring",
+                "author_name": "Sophie Liu",
+                "author_handle": "@sophie_pmf",
+                "engagement_metrics": {"like_count": 245, "retweet_count": 67, "reply_count": 82},
+                "relevance_score": 9.1,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "Product-Market Fit to Scale", "confidence": 0.96, "reasoning": "Found PMF, now scaling"},
+                        {"signal": "VP Sales Hiring", "confidence": 0.94, "reasoning": "Hiring VP Sales"}
+                    ],
+                    "priority": "High",
+                    "score": 9.1,
+                    "relevance_score": 9.1
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409222170692233",
+                "content": "Making the jump from SMB to enterprise sales. Our current GTM won't work for $100K+ deals. Need consultants with enterprise sales expertise. #enterprise #GTM #transition",
+                "author_name": "Mark Thompson",
+                "author_handle": "@mark_enterprise",
+                "engagement_metrics": {"like_count": 167, "retweet_count": 39, "reply_count": 58},
+                "relevance_score": 8.5,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "Enterprise Sales Transition", "confidence": 0.93, "reasoning": "SMB to enterprise transition"},
+                        {"signal": "GTM Strategy Overhaul", "confidence": 0.87, "reasoning": "Current GTM won't work for larger deals"}
+                    ],
+                    "priority": "High",
+                    "score": 8.5,
+                    "relevance_score": 8.5
+                }
+            },
+            {
+                "id": str(uuid.uuid4()),
+                "tweet_id": "1935409213061583290",
+                "content": "Post-Series A and building our RevOps function from the ground up. Need strategic guidance on CRM implementation and sales process design. #RevOps #SeriesA #sales",
+                "author_name": "Rachel Kim",
+                "author_handle": "@rachel_revops",
+                "engagement_metrics": {"like_count": 203, "retweet_count": 56, "reply_count": 71},
+                "relevance_score": 8.4,
+                "timestamp": datetime.utcnow().isoformat(),
+                "intent_analysis": {
+                    "intent_signals": [
+                        {"signal": "Revenue Operations Setup", "confidence": 0.95, "reasoning": "Building RevOps from scratch"},
+                        {"signal": "CRM Implementation", "confidence": 0.88, "reasoning": "Need CRM implementation guidance"}
+                    ],
+                    "priority": "High",
+                    "score": 8.4,
+                    "relevance_score": 8.4
                 }
             }
         ]
