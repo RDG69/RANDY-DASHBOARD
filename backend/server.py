@@ -345,6 +345,14 @@ FALLBACK_NEWS = [
         "source": "TechCrunch",
         "category": "Leadership",
         "relevance_score": 8.5
+    },
+    {
+        "title": "Pipeline Anxiety: 68% of Growth-Stage CEOs Lose Sleep Over Sales Predictability",
+        "description": "Survey reveals the top concerns of Series A/B founders and how they're addressing revenue challenges",
+        "url": "https://www.saastr.com/",
+        "source": "SaaStr",
+        "category": "Pipeline",
+        "relevance_score": 8.3
     }
 ]
 
