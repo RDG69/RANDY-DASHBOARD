@@ -216,15 +216,18 @@ frontend:
 
   - task: "Market Data Widget"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Financial market data widget showing NASDAQ, S&P 500, and Bitcoin with change indicators"
+      - working: false
+        agent: "testing"
+        comment: "Unable to test the market data widget due to preview URL limitations. The backend API is returning market data correctly when accessed directly."
 
   - task: "Startup News Section"
     implemented: true
