@@ -356,6 +356,57 @@ FALLBACK_NEWS = [
     }
 ]
 
+FALLBACK_DEALS = [
+    {
+        "title": "CloudStrike Acquires SalesBoost for $120M to Expand GTM Solutions",
+        "description": "Strategic acquisition targets Series A companies needing sales acceleration services",
+        "company": "CloudStrike",
+        "type": "M&A",
+        "amount": "$120M",
+        "relevance_score": 9.2
+    },
+    {
+        "title": "RevOps Platform ScalePath Raises $25M Series B",
+        "description": "Funding will accelerate expansion into revenue operations consulting for growth-stage startups",
+        "company": "ScalePath",
+        "type": "Financing",
+        "amount": "$25M",
+        "relevance_score": 8.9
+    },
+    {
+        "title": "GTM Consulting Firm Velocity Partners Acquired by Bain Capital",
+        "description": "Private equity acquisition of premier B2B sales consulting firm serving Series A/B companies",
+        "company": "Velocity Partners",
+        "type": "M&A",
+        "amount": "Undisclosed",
+        "relevance_score": 8.7
+    },
+    {
+        "title": "SaaS Sales Training Platform RampUp Closes $18M Series A",
+        "description": "Platform helps scaling companies onboard and train sales teams more effectively",
+        "company": "RampUp",
+        "type": "Financing",
+        "amount": "$18M",
+        "relevance_score": 8.5
+    },
+    {
+        "title": "Enterprise CRM Startup FlowState Raises $40M to Challenge Salesforce",
+        "description": "New funding targets Series A/B companies dissatisfied with legacy CRM solutions",
+        "company": "FlowState",
+        "type": "Financing",
+        "amount": "$40M",
+        "relevance_score": 8.3
+    },
+    {
+        "title": "Sales Intelligence Platform PipelineAI Acquired by HubSpot",
+        "description": "Strategic acquisition enhances AI-powered lead scoring and intent signal detection",
+        "company": "PipelineAI",
+        "type": "M&A",
+        "amount": "$85M",
+        "relevance_score": 8.1
+    }
+]
+
 FALLBACK_TWEETS = [
     {
         "id": str(uuid.uuid4()),
