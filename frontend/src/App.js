@@ -490,6 +490,34 @@ const App = () => {
                   </p>
                 </div>
               </div>
+              {/* PDF Prompt Modal */}
+              {showPdfPrompt && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                  <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+                    <h3 className="text-lg font-bold text-gray-900 mb-4">💾 Save Current Results?</h3>
+                    <p className="text-gray-600 mb-6">
+                      Would you like to save your current prospect results as a PDF before getting new data?
+                    </p>
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => handlePdfPromptResponse(true)}
+                        className="flex-1 bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700"
+                      >
+                        📄 Yes, Save PDF First
+                      </button>
+                      <button
+                        onClick={() => handlePdfPromptResponse(false)}
+                        className="flex-1 border border-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-50"
+                      >
+                        🔄 Just Refresh
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-3 text-center">
+                      PDF will be optimized for single-page printing
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           } />
         </Routes>
