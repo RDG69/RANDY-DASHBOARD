@@ -171,15 +171,18 @@ backend:
 frontend:
   - task: "Executive Dashboard UI"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Complete executive dashboard with Silver Birch Growth branding, responsive design, and professional UI"
+      - working: false
+        agent: "testing"
+        comment: "Unable to test the frontend UI due to preview URL limitations. Both https://99bd6dfb-f47c-4871-80bb-13e24af33ba0.preview.emergentagent.com/ and https://bcfadc05-47d4-4401-8547-56a7e2fbdcc1.preview.emergentagent.com/ return 'Preview Unavailable' errors. The frontend is running on http://localhost:3000 according to curl checks, but Playwright cannot access it. The backend API is working correctly when accessed directly."
 
   - task: "Lead Management Interface"
     implemented: true
