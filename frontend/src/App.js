@@ -214,43 +214,53 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* Market Data Widget */}
-            <div className="flex items-center space-x-6">
-              {marketLoading ? (
-                <div className="flex space-x-4">
-                  <div className="animate-pulse">
-                    <div className="h-4 w-16 bg-gray-200 rounded mb-1"></div>
-                    <div className="h-5 w-20 bg-gray-200 rounded mb-1"></div>
-                    <div className="h-3 w-12 bg-gray-200 rounded"></div>
-                  </div>
-                  <div className="animate-pulse">
-                    <div className="h-4 w-16 bg-gray-200 rounded mb-1"></div>
-                    <div className="h-5 w-20 bg-gray-200 rounded mb-1"></div>
-                    <div className="h-3 w-12 bg-gray-200 rounded"></div>
-                  </div>
-                  <div className="animate-pulse">
-                    <div className="h-4 w-16 bg-gray-200 rounded mb-1"></div>
-                    <div className="h-5 w-20 bg-gray-200 rounded mb-1"></div>
-                    <div className="h-3 w-12 bg-gray-200 rounded"></div>
-                  </div>
-                </div>
-              ) : marketData && marketData.length > 0 ? (
-                marketData.map((market, index) => (
-                  <div key={index} className="text-center">
-                    <p className="text-xs font-medium text-gray-500">{market.symbol}</p>
-                    <p className="text-sm font-bold text-gray-900">
-                      ${typeof market.price === 'number' ? market.price.toLocaleString() : market.price}
-                    </p>
-                    <p className={`text-xs ${market.change >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                      {market.change_percent}
-                    </p>
-                  </div>
-                ))
-              ) : null}
+            {/* Stats - Moved to Header */}
+            <div className="hidden md:flex items-center space-x-6">
+              <div className="text-center">
+                <p className="text-xs font-medium text-gray-500">Total Leads</p>
+                <p className="text-lg font-bold text-gray-900">{stats.total_leads || 0}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs font-medium text-gray-500">High Priority</p>
+                <p className="text-lg font-bold text-red-600">{stats.high_priority_leads || 0}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs font-medium text-gray-500">New Today</p>
+                <p className="text-lg font-bold text-blue-600">{stats.new_leads_today || 0}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs font-medium text-gray-500">Avg Score</p>
+                <p className="text-lg font-bold text-green-600">{stats.avg_lead_score || 0}</p>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Purple CTA Ribbon */}
+        <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-2 rounded-bl-lg shadow-lg transform hover:scale-105 transition-transform">
+          <a
+            href="https://silverbirchgrowth.com/contact"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center space-x-2 text-sm font-semibold"
+          >
+            <span>🚀 Ready to Scale Sales?</span>
+            <ArrowUpRight className="w-4 h-4" />
+          </a>
+        </div>
       </header>
+
+      {/* Inspirational Quote */}
+      <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="text-center">
+            <p className="text-sm italic text-gray-600">
+              "The best time to plant a tree was 20 years ago. The second best time is now. The same applies to scaling your sales." 
+              <span className="font-medium"> - Growth Proverb</span>
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Top Section: News + Stats */}
