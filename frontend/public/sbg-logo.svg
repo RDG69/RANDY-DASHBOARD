@@ -1,19 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 120">
   <defs>
     <style>
-      .logo-text { font-family: 'Arial', sans-serif; font-weight: bold; }
-      .green-color { fill: #10b981; }
-      .dark-text { fill: #1f2937; }
+      .logo-text { font-family: 'Arial Black', Arial, sans-serif; font-weight: 900; }
+      .green-arrow { fill: #00ff88; }
+      .black-text { fill: #000000; }
     </style>
   </defs>
   
-  <!-- Background circle -->
-  <circle cx="25" cy="40" r="20" class="green-color"/>
+  <!-- Text -->
+  <text x="10" y="35" class="logo-text black-text" font-size="28">SILVER</text>
+  <text x="10" y="65" class="logo-text black-text" font-size="28">BIRCH</text>
+  <text x="10" y="95" class="logo-text black-text" font-size="28">GROWTH</text>
   
-  <!-- SBG Text in circle -->
-  <text x="25" y="48" class="logo-text dark-text" font-size="14" text-anchor="middle" fill="white">SBG</text>
+  <!-- Green diagonal arrow -->
+  <path class="green-arrow" d="M 180 10 L 290 10 L 290 25 L 195 25 L 270 100 L 290 100 L 290 115 L 250 115 L 180 40 Z"/>
   
-  <!-- Company name -->
-  <text x="55" y="35" class="logo-text dark-text" font-size="16">Silver Birch</text>
-  <text x="55" y="52" class="logo-text green-color" font-size="16">Growth</text>
+  <!-- Arrow head -->
+  <path class="green-arrow" d="M 270 10 L 290 10 L 290 30 L 270 30 Z"/>
 </svg>
