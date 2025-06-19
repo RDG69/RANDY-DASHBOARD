@@ -318,7 +318,7 @@ FALLBACK_NEWS = [
     {
         "title": "OpenAI Launches GPT-4 Turbo with Enhanced Business Features",
         "description": "New enterprise-focused capabilities include better function calling and reduced costs for business applications",
-        "url": "https://openai.com/blog/gpt-4-turbo",
+        "url": "https://openai.com/",
         "source": "OpenAI",
         "category": "AI",
         "relevance_score": 9.4
@@ -326,7 +326,7 @@ FALLBACK_NEWS = [
     {
         "title": "Salesforce Acquires AI Sales Platform for $2.8B",
         "description": "Major CRM acquisition signals push into AI-powered sales automation and lead scoring",
-        "url": "https://salesforce.com/news/",
+        "url": "https://salesforce.com/",
         "source": "Salesforce",
         "category": "Sales Tech",
         "relevance_score": 9.1
@@ -342,7 +342,7 @@ FALLBACK_NEWS = [
     {
         "title": "HubSpot Reports 40% Growth in Enterprise Revenue Operations",
         "description": "RevOps tools seeing massive adoption as companies focus on revenue efficiency",
-        "url": "https://hubspot.com/company-news",
+        "url": "https://hubspot.com/",
         "source": "HubSpot",
         "category": "RevOps",
         "relevance_score": 8.5
