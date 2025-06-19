@@ -292,8 +292,8 @@ const Dashboard = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <div className="text-center">
             <p className="text-sm italic text-gray-600">
-              "The best time to plant a tree was 20 years ago. The second best time is now. The same applies to scaling your sales." 
-              <span className="font-medium"> - Growth Proverb</span>
+              "The best prospects aren't just buying - they're broadcasting their intent. The art is knowing how to listen." 
+              <span className="font-medium"> - Intent Intelligence</span>
             </p>
           </div>
         </div>
