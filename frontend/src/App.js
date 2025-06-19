@@ -56,34 +56,59 @@ const App = () => {
   };
 
   const handleSmartAnalysis = async () => {
-    console.log("GO clicked! Input:", targetingInput);
-    if (!targetingInput.trim()) return;
+    console.log("🚀 GO button clicked! Input:", targetingInput);
+    if (!targetingInput.trim()) {
+      console.log("❌ No input provided, returning early");
+      return;
+    }
     
     try {
+      console.log("🔍 Starting analysis...");
       setAnalyzing(true);
       
-      // Fast, simple API calls without complex AI processing
+      console.log("📡 Making API calls with context...");
+      // Fast API calls with context filtering
       const [leadsResponse, newsResponse, dealsResponse] = await Promise.all([
         axios.get(`${API}/leads`, {
           params: { context: targetingInput }
-        }).catch(e => ({ data: { leads: [] } })),
+        }).then(response => {
+          console.log("✅ Leads updated:", response.data.leads.length, "leads");
+          return response;
+        }).catch(e => {
+          console.error("❌ Leads API failed:", e);
+          return { data: { leads: [] } };
+        }),
         axios.get(`${API}/startup-news`, {
           params: { context: targetingInput }
-        }).catch(e => ({ data: { news: [] } })),
+        }).then(response => {
+          console.log("✅ News updated:", response.data.news.length, "items");
+          return response;
+        }).catch(e => {
+          console.error("❌ News API failed:", e);
+          return { data: { news: [] } };
+        }),
         axios.get(`${API}/deals`, {
           params: { context: targetingInput }
-        }).catch(e => ({ data: { deals: [] } }))
+        }).then(response => {
+          console.log("✅ Deals updated:", response.data.deals.length, "deals");
+          return response;
+        }).catch(e => {
+          console.error("❌ Deals API failed:", e);
+          return { data: { deals: [] } };
+        })
       ]);
       
-      // Update data
+      console.log("📊 Updating UI with new data...");
+      // Update data with visual feedback
       setLeads(leadsResponse.data.leads || []);
       setNews(newsResponse.data.news || []);
       setDeals(dealsResponse.data.deals || []);
       
-      console.log("Data updated successfully!");
+      console.log("🎉 Data updated successfully!");
+      console.log("📈 New scores - Leads:", leadsResponse.data.leads.slice(0,3).map(l => l.score));
       
     } catch (error) {
-      console.error("Error in smart analysis:", error);
+      console.error("💥 Error in smart analysis:", error);
     } finally {
       setAnalyzing(false);
     }
