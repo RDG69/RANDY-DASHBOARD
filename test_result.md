@@ -246,15 +246,18 @@ frontend:
 
   - task: "Smart Search and Filtering"
     implemented: true
-    working: true
+    working: false
     file: "frontend/src/App.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: true
         agent: "main"
         comment: "Intelligent search bar with 'I am targeting' functionality and comprehensive filtering system"
+      - working: false
+        agent: "testing"
+        comment: "Unable to test the search and filtering functionality due to preview URL limitations. The backend API is working correctly when accessed directly."
 
 metadata:
   created_by: "main_agent"
