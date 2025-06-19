@@ -587,9 +587,47 @@ async def root():
 
 @api_router.post("/analyze-content")
 async def analyze_content(request: ContentAnalysisRequest):
-    """Analyze content for growth intent signals"""
+    """Analyze content for growth intent signals - FAST VERSION"""
     try:
-        analysis = await analyze_content_with_ai(request.content, request.company_context or "")
+        # Fast keyword-based analysis 
+        content_lower = request.content.lower()
+        intent_signals = []
+        score = 0
+        
+        # Quick keyword matching
+        if any(word in content_lower for word in ["cro", "chief revenue", "vp sales", "hiring"]):
+            intent_signals.append({
+                "signal": "CRO Hiring Urgency",
+                "confidence": 0.85,
+                "reasoning": "Executive hiring keywords detected"
+            })
+            score += 3
+        
+        if any(word in content_lower for word in ["series a", "series b", "funding", "raised"]):
+            intent_signals.append({
+                "signal": "Series A Follow-On Needed", 
+                "confidence": 0.80,
+                "reasoning": "Funding keywords detected"
+            })
+            score += 3
+            
+        if any(word in content_lower for word in ["scaling", "scale", "growth", "expand"]):
+            intent_signals.append({
+                "signal": "Sales Team Scaling",
+                "confidence": 0.75,
+                "reasoning": "Scaling keywords detected"
+            })
+            score += 2
+        
+        priority = "High" if score >= 5 else "Medium" if score >= 2 else "Low"
+        
+        analysis = {
+            "intent_signals": intent_signals,
+            "priority": priority,
+            "score": min(score, 10),
+            "relevance_score": min(score, 10)
+        }
+        
         return JSONResponse(content=analysis)
     except Exception as e:
         logging.error(f"Content analysis failed: {e}")
