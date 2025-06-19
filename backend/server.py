@@ -62,7 +62,9 @@ INTENT_SIGNALS = [
     "AI Adoption", "Digital Transformation", "Growth Strategy",
     "Market Expansion", "Competitive Analysis", "Revenue Operations",
     "Sales Analytics", "Customer Success", "Marketing Automation",
-    "B2B Sales", "Enterprise Sales", "SaaS Growth"
+    "B2B Sales", "Enterprise Sales", "SaaS Growth",
+    "Sales Team Scaling", "Revenue Growth Challenges", "Go-to-Market Strategy",
+    "Sales Consultant Needed", "Growth Consultant Search", "Revenue Optimization"
 ]
 
 # Data Models
