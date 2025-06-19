@@ -159,51 +159,6 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Stats Cards */}
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 print-stats">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <div className="flex items-center">
-                      <Users className="w-8 h-8 text-blue-600" />
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">Total Leads</p>
-                        <p className="text-2xl font-bold text-gray-900">{stats.total_leads || 0}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <div className="flex items-center">
-                      <TrendingUp className="w-8 h-8 text-red-600" />
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">High Priority</p>
-                        <p className="text-2xl font-bold text-gray-900">{stats.high_priority_leads || 0}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <div className="flex items-center">
-                      <Calendar className="w-8 h-8 text-green-600" />
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">New Today</p>
-                        <p className="text-2xl font-bold text-gray-900">{stats.new_leads_today || 0}</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <div className="flex items-center">
-                      <Star className="w-8 h-8 text-yellow-600" />
-                      <div className="ml-4">
-                        <p className="text-sm font-medium text-gray-500">Avg Score</p>
-                        <p className="text-2xl font-bold text-gray-900">{stats.avg_lead_score || 0}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               {/* Smart Targeting Section */}
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
                 <div className="bg-white rounded-lg shadow p-6">
