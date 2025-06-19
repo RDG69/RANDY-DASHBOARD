@@ -433,67 +433,69 @@ FALLBACK_TWEETS = [
 # Utility Functions
 async def analyze_content_with_ai(content: str, context: str = "") -> Dict[str, Any]:
     """Analyze content for intent signals using AI"""
-    if not openai_client:
-        # Fallback analysis - be more conservative
-        return {
-            "intent_signals": [],
-            "priority": "Low",
-            "score": 0
-        }
     
-    try:
-        prompt = f"""
-        Analyze this B2B content for sales intent signals: "{content}"
-
-        Available signals: Series A Follow-On Needed, CRO Hiring Urgency, VP Sales Hiring, Pipeline Anxiety, Revenue Plateau, GTM Strategy Overhaul, Sales Team Scaling, International Expansion, Product-Market Fit to Scale, Revenue Growth Acceleration
-
-        Return JSON only:
-        {{
-            "intent_signals": [{{"signal": "signal_name", "confidence": 0.0-1.0, "reasoning": "brief_reason"}}],
-            "priority": "High/Medium/Low",
-            "score": 0-10,
-            "relevance_score": 0-10
-        }}
-        """
+    # Fast fallback analysis with some basic keyword matching
+    content_lower = content.lower()
+    intent_signals = []
+    score = 0
+    
+    # Quick keyword-based analysis for speed
+    if any(word in content_lower for word in ["cro", "chief revenue", "vp sales", "hiring"]):
+        intent_signals.append({
+            "signal": "CRO Hiring Urgency",
+            "confidence": 0.85,
+            "reasoning": "Keywords indicate executive hiring activity"
+        })
+        score += 3
+    
+    if any(word in content_lower for word in ["series a", "series b", "funding", "raised"]):
+        intent_signals.append({
+            "signal": "Series A Follow-On Needed",
+            "confidence": 0.80,
+            "reasoning": "Funding-related keywords detected"
+        })
+        score += 3
         
-        response = openai_client.chat.completions.create(
-            model="gpt-3.5-turbo",  # Changed from gpt-4 for speed
-            messages=[{"role": "user", "content": prompt}],
-            max_tokens=100,  # Reduced further
-            temperature=0.1,
-            timeout=10  # 10 second timeout
-        )
-        
-        # Parse AI response
+    if any(word in content_lower for word in ["scaling", "scale", "growth", "expand"]):
+        intent_signals.append({
+            "signal": "Sales Team Scaling",
+            "confidence": 0.75,
+            "reasoning": "Scaling-related keywords detected"
+        })
+        score += 2
+    
+    priority = "High" if score >= 5 else "Medium" if score >= 2 else "Low"
+    
+    # Try AI enhancement (with timeout) but don't block on it
+    if openai_client:
         try:
-            analysis = json.loads(response.choices[0].message.content)
+            prompt = f"Analyze for B2B intent: '{content}'. Return JSON: {{\"intent_signals\":[{{\"signal\":\"name\",\"confidence\":0.8,\"reasoning\":\"brief\"}}],\"priority\":\"High\",\"score\":8}}"
             
-            # Validate the analysis
-            if not isinstance(analysis.get("intent_signals"), list):
-                analysis["intent_signals"] = []
+            response = openai_client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=80,
+                temperature=0.1,
+                timeout=5  # Very short timeout
+            )
             
-            # Ensure scores are reasonable
-            analysis["score"] = max(0, min(10, analysis.get("score", 0)))
-            analysis["relevance_score"] = max(0, min(10, analysis.get("relevance_score", 0)))
-            
-            return analysis
-        except json.JSONDecodeError:
-            logging.warning("GPT returned invalid JSON, using fallback")
-            return {
-                "intent_signals": [],
-                "priority": "Low",
-                "score": 0,
-                "relevance_score": 0
-            }
-            
-    except Exception as e:
-        logging.error(f"AI analysis failed: {e}")
-        return {
-            "intent_signals": [],
-            "priority": "Low",
-            "score": 0,
-            "relevance_score": 0
-        }
+            try:
+                ai_analysis = json.loads(response.choices[0].message.content)
+                # Use AI results if they're better
+                if ai_analysis.get("score", 0) > score:
+                    return ai_analysis
+            except:
+                pass  # Fall back to keyword analysis
+                
+        except Exception as e:
+            logging.warning(f"AI analysis timeout/failed, using fast fallback: {e}")
+    
+    return {
+        "intent_signals": intent_signals,
+        "priority": priority,
+        "score": min(score, 10),
+        "relevance_score": min(score, 10)
+    }
 
 async def fetch_twitter_data(query: str = None, count: int = 10) -> List[Dict]:
     """Fetch tweets using Twitter API with B2B-specific queries"""
