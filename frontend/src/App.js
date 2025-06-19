@@ -309,41 +309,52 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Search and Target Section */}
-        <div className="bg-white rounded-lg shadow mb-4 p-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">I am targeting</label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Enter search terms..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                />
-              </div>
+        {/* Combined Targeting Section */}
+        <div className="bg-white rounded-lg shadow mb-6 p-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-4">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">🎯 Smart Targeting</h3>
+              <p className="text-gray-600">AI will analyze your input and find matching prospects and signals</p>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Custom Target</label>
-              <div className="flex space-x-2">
-                <div className="relative flex-1">
-                  <Target className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            
+            <div className="flex flex-col space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">I am targeting</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="e.g., CTOs at fintech startups..."
-                    value={customTarget}
-                    onChange={(e) => setCustomTarget(e.target.value)}
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="e.g., CTOs at fintech startups raising Series A, VPs of Sales at SaaS companies..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
+              </div>
+              
+              <div className="text-center">
                 <button
-                  onClick={handleCustomTargetAnalysis}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium"
+                  onClick={handleSmartAnalysis}
+                  disabled={!searchTerm.trim() || generating}
+                  className="inline-flex items-center px-8 py-3 bg-green-600 text-white font-bold text-lg rounded-lg shadow-lg hover:bg-green-700 transform hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                 >
-                  Analyze
+                  {generating ? (
+                    <>
+                      <Activity className="w-5 h-5 mr-3 animate-spin" />
+                      Analyzing & Finding Matches...
+                    </>
+                  ) : (
+                    <>
+                      🚀 GO
+                    </>
+                  )}
                 </button>
+                <p className="text-sm text-gray-500 mt-2">
+                  {generating 
+                    ? "AI is analyzing your targeting criteria and finding relevant prospects and signals..."
+                    : "AI will find prospects and social signals matching your targeting criteria"
+                  }
+                </p>
               </div>
             </div>
           </div>
