@@ -56,11 +56,17 @@ const App = () => {
   };
 
   const handleSmartAnalysis = async () => {
-    if (!targetingInput.trim()) return;
+    console.log("GO button clicked! Input:", targetingInput);
+    if (!targetingInput.trim()) {
+      console.log("No input provided, returning early");
+      return;
+    }
     
     try {
+      console.log("Starting analysis...");
       setAnalyzing(true);
       
+      console.log("Making API calls...");
       // Load all data sections immediately without AI delays
       const [leadsResponse, tweetsResponse, newsResponse, dealsResponse, statsResponse] = await Promise.all([
         // Basic leads filtering (fast)
@@ -81,12 +87,15 @@ const App = () => {
         axios.get(`${API}/stats`)
       ]);
       
+      console.log("API calls completed, updating data...");
       // Update all data immediately
       setLeads(leadsResponse.data.leads || []);
       setTweets(tweetsResponse.data.tweets || []);
       setNews(newsResponse.data.news || []);
       setDeals(dealsResponse.data.deals || []);
       setStats(statsResponse.data);
+      
+      console.log("Data updated successfully!");
       
     } catch (error) {
       console.error("Error in smart analysis:", error);
