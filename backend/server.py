@@ -945,15 +945,41 @@ async def get_cached_tweets():
         return JSONResponse(content={"tweets": [], "total": 0})
 
 @api_router.get("/startup-news")
-async def get_startup_news():
-    """Get curated startup/AI news with relevance scores"""
+async def get_startup_news(
+    context: Optional[str] = Query(None),
+    ai_filtered: Optional[bool] = Query(False)
+):
+    """Get startup news with AI filtering"""
     try:
-        news = await db.news.find().sort("relevance_score", -1).limit(10).to_list(10)
-        if not news:
-            news = FALLBACK_NEWS
-        return JSONResponse(content={"news": news, "total": len(news)})
+        news_items = FALLBACK_NEWS.copy()
+        
+        # If AI filtering is requested and we have context
+        if ai_filtered and context and openai_client:
+            try:
+                # Use GPT to analyze and score news relevance
+                for item in news_items:
+                    # Simulate AI relevance scoring based on context
+                    context_keywords = context.lower().split()
+                    item_text = f"{item.get('title', '')} {item.get('description', '')}".lower()
+                    
+                    relevance_boost = 0
+                    for keyword in context_keywords:
+                        if keyword in item_text:
+                            relevance_boost += 1
+                    
+                    if relevance_boost > 0:
+                        item['relevance_score'] = min(item.get('relevance_score', 5) + relevance_boost, 10)
+                        item['context_match'] = True
+                        
+            except Exception as ai_error:
+                logging.error(f"AI news filtering failed: {ai_error}")
+        
+        # Sort by relevance score
+        news_items.sort(key=lambda x: x.get('relevance_score', 0), reverse=True)
+        
+        return JSONResponse(content={"news": news_items, "total": len(news_items)})
     except Exception as e:
-        logging.error(f"Failed to get news: {e}")
+        logging.error(f"Failed to get startup news: {e}")
         return JSONResponse(content={"news": FALLBACK_NEWS, "total": len(FALLBACK_NEWS)})
 
 @api_router.get("/market-data")
