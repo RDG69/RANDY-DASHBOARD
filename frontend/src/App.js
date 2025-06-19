@@ -231,61 +231,36 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <img src="/sbg-logo.svg" alt="Silver Birch Growth" className="w-16 h-8" />
+      <div className="bg-white shadow-sm border-b border-gray-200 print-header">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <img
+                className="h-8 w-8 mr-3"
+                src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4"
+                alt="Silver Birch Growth"
+              />
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Prospecting for Intent</h1>
-                <p className="text-xs text-gray-500">Compliments of SilverBirchGrowth.com</p>
-                <a 
-                  href="https://9kct1c25.drwbrdg.com/sbginsiders" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-xs text-green-600 hover:text-green-700 font-medium"
-                >
-                  📧 Join our Mailer to win a trip
-                </a>
+                <h1 className="text-2xl font-bold text-gray-900">Prospecting for Intent</h1>
+                <p className="text-sm text-gray-600">Silver Birch Growth • B2B Intelligence Platform</p>
               </div>
             </div>
-
-            {/* Stats - Moved to Header */}
-            <div className="hidden md:flex items-center space-x-6">
-              <div className="text-center">
-                <p className="text-xs font-medium text-gray-500">Total Leads</p>
-                <p className="text-lg font-bold text-gray-900">{stats.total_leads || 0}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-xs font-medium text-gray-500">High Priority</p>
-                <p className="text-lg font-bold text-red-600">{stats.high_priority_leads || 0}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-xs font-medium text-gray-500">New Today</p>
-                <p className="text-lg font-bold text-blue-600">{stats.new_leads_today || 0}</p>
-              </div>
-              <div className="text-center">
-                <p className="text-xs font-medium text-gray-500">Avg Score</p>
-                <p className="text-lg font-bold text-green-600">{stats.avg_lead_score || 0}</p>
-              </div>
+            
+            {/* Purple CTA Ribbon - Hidden in print */}
+            <div className="hidden md:block no-print">
+              <a
+                href="https://9kct1c25.drwbrdg.com/sbginsiders"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white text-sm font-medium rounded-lg shadow-md hover:from-purple-700 hover:to-purple-800 transform hover:scale-105 transition-all duration-200"
+              >
+                🎁 Join our Mailer to win a trip
+                <ArrowUpRight className="ml-2 w-4 h-4" />
+              </a>
             </div>
           </div>
         </div>
-
-        {/* Purple CTA Ribbon */}
-        <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-2 rounded-bl-lg shadow-lg transform hover:scale-105 transition-transform">
-          <a
-            href="https://silverbirchgrowth.com/contact"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center space-x-2 text-sm font-semibold"
-          >
-            <span>🚀 Ready to Scale Sales?</span>
-            <ArrowUpRight className="w-4 h-4" />
-          </a>
-        </div>
-      </header>
+      </div>
 
       {/* Inspirational Quote */}
       <div className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
