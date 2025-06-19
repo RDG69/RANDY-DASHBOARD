@@ -647,41 +647,45 @@ async def get_leads(
         # Start with fallback data
         filtered_leads = FALLBACK_LEADS.copy()
         
-        # If AI enhancement is requested and we have context
-        if ai_enhanced and context and openai_client:
-            try:
-                # Use GPT to analyze context and enhance lead relevance
-                enhanced_prompt = f"""
-                Analyze this targeting request: "{context}"
+        # If we have context, filter and modify leads based on it
+        if context:
+            context_lower = context.lower()
+            
+            # Boost relevance for leads that match context keywords
+            for lead in filtered_leads:
+                lead_text = f"{lead.get('role', '')} {lead.get('company', '')} {lead.get('geography', '')}".lower()
+                social_content = lead.get('social_content', '').lower()
                 
-                Based on this, score and rank these leads for relevance (1-10 scale).
-                Focus on leads that match the industry, role, company stage, and geographic preferences mentioned.
+                # Check for keyword matches
+                context_words = context_lower.split()
+                matches = 0
                 
-                Return a JSON array with lead IDs and their relevance scores.
-                """
+                for word in context_words:
+                    if word in lead_text or word in social_content:
+                        matches += 1
                 
-                response = openai_client.chat.completions.create(
-                    model="gpt-3.5-turbo",  # Changed for speed
-                    messages=[
-                        {"role": "system", "content": "You are a B2B sales intelligence analyst. Analyze targeting criteria and rank lead relevance."},
-                        {"role": "user", "content": enhanced_prompt}
-                    ],
-                    max_tokens=200,  # Reduced
-                    temperature=0.3,
-                    timeout=8  # 8 second timeout
-                )
+                # Boost score based on matches
+                if matches > 0:
+                    lead['score'] = min(lead.get('score', 0) + matches * 0.5, 10)
+                    lead['context_match'] = True
+                    lead['relevance_boost'] = matches
                 
-                # Enhance leads with AI-generated relevance
-                for lead in filtered_leads:
-                    # Simulate AI-enhanced scoring based on context
-                    if any(keyword.lower() in context.lower() for keyword in [lead.get('role', ''), lead.get('company', ''), lead.get('geography', '')]):
+                # Add specific targeting based on common search terms
+                if any(term in context_lower for term in ['cro', 'chief revenue', 'vp sales']):
+                    if any(signal.get('signal') == 'CRO Hiring Urgency' for signal in lead.get('intent_signals', [])):
+                        lead['score'] = min(lead.get('score', 0) + 2, 10)
+                        lead['priority'] = 'High'
+                
+                if any(term in context_lower for term in ['series a', 'series b', 'funding', 'raised']):
+                    if any(signal.get('signal') == 'Series A Follow-On Needed' for signal in lead.get('intent_signals', [])):
+                        lead['score'] = min(lead.get('score', 0) + 2, 10)
+                        lead['priority'] = 'High'
+                
+                if any(term in context_lower for term in ['scaling', 'scale', 'growth']):
+                    if any(signal.get('signal') == 'Sales Team Scaling' for signal in lead.get('intent_signals', [])):
                         lead['score'] = min(lead.get('score', 0) + 1.5, 10)
-                        lead['ai_enhanced'] = True
-                        
-            except Exception as ai_error:
-                logging.error(f"AI enhancement failed: {ai_error}")
         
-        # Apply filters
+        # Apply traditional filters
         if role:
             filtered_leads = [lead for lead in filtered_leads 
                             if role.lower() in lead.get('role', '').lower()]
