@@ -34,11 +34,11 @@ const App = () => {
       
       // Load all data in parallel
       const [leadsRes, tweetsRes, newsRes, dealsRes, statsRes] = await Promise.all([
-        axios.get(`${API}/leads`),
-        axios.get(`${API}/cached-tweets`),
-        axios.get(`${API}/startup-news`),
-        axios.get(`${API}/deals`),
-        axios.get(`${API}/stats`)
+        axios.get(`${API}/leads`).catch(e => ({ data: { leads: [] } })),
+        axios.get(`${API}/cached-tweets`).catch(e => ({ data: { tweets: [] } })),
+        axios.get(`${API}/startup-news`).catch(e => ({ data: { news: [] } })),
+        axios.get(`${API}/deals`).catch(e => ({ data: { deals: [] } })),
+        axios.get(`${API}/stats`).catch(e => ({ data: {} }))
       ]);
 
       setLeads(leadsRes.data.leads || []);
@@ -56,44 +56,29 @@ const App = () => {
   };
 
   const handleSmartAnalysis = async () => {
-    console.log("GO button clicked! Input:", targetingInput);
-    if (!targetingInput.trim()) {
-      console.log("No input provided, returning early");
-      return;
-    }
+    console.log("GO clicked! Input:", targetingInput);
+    if (!targetingInput.trim()) return;
     
     try {
-      console.log("Starting analysis...");
       setAnalyzing(true);
       
-      console.log("Making API calls...");
-      // Load all data sections immediately without AI delays
-      const [leadsResponse, tweetsResponse, newsResponse, dealsResponse, statsResponse] = await Promise.all([
-        // Basic leads filtering (fast)
+      // Fast, simple API calls without complex AI processing
+      const [leadsResponse, newsResponse, dealsResponse] = await Promise.all([
         axios.get(`${API}/leads`, {
           params: { context: targetingInput }
-        }),
-        // Use cached tweets for speed
-        axios.get(`${API}/cached-tweets`),
-        // Basic news filtering
+        }).catch(e => ({ data: { leads: [] } })),
         axios.get(`${API}/startup-news`, {
           params: { context: targetingInput }
-        }),
-        // Basic deals filtering  
+        }).catch(e => ({ data: { news: [] } })),
         axios.get(`${API}/deals`, {
           params: { context: targetingInput }
-        }),
-        // Stats
-        axios.get(`${API}/stats`)
+        }).catch(e => ({ data: { deals: [] } }))
       ]);
       
-      console.log("API calls completed, updating data...");
-      // Update all data immediately
+      // Update data
       setLeads(leadsResponse.data.leads || []);
-      setTweets(tweetsResponse.data.tweets || []);
       setNews(newsResponse.data.news || []);
       setDeals(dealsResponse.data.deals || []);
-      setStats(statsResponse.data);
       
       console.log("Data updated successfully!");
       
@@ -112,14 +97,12 @@ const App = () => {
     setShowPdfPrompt(false);
     
     if (downloadPdf) {
-      // Show PDF instruction
       alert("Press Ctrl+P (Cmd+P on Mac) to save current results as PDF. The page is optimized for single-page printing.");
       setTimeout(() => {
         window.print();
       }, 1000);
     }
     
-    // Refresh data after PDF handling
     setTimeout(() => {
       handleSmartAnalysis();
     }, downloadPdf ? 3000 : 0);
@@ -156,7 +139,6 @@ const App = () => {
                       </div>
                     </div>
                     
-                    {/* Purple CTA Ribbon - Hidden in print */}
                     <div className="hidden md:block no-print">
                       <a
                         href="https://9kct1c25.drwbrdg.com/sbginsiders"
@@ -219,7 +201,7 @@ const App = () => {
                         </button>
                         <p className="text-sm text-gray-500 mt-2">
                           {analyzing 
-                            ? "AI is analyzing your targeting criteria and finding relevant prospects and signals..."
+                            ? "Finding relevant prospects and signals..."
                             : "AI will find prospects, tweets, and news matching your targeting criteria"
                           }
                         </p>
@@ -229,20 +211,20 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Hot Deals & News - MOVED TO TOP */}
+              {/* EXCITING CONTENT UP TOP - Hot Deals & Growth Intelligence */}
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   
                   {/* Hot Deals Section */}
-                  <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-lg shadow border-l-4 border-red-500">
+                  <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-lg shadow-lg border-l-4 border-red-500">
                     <div className="px-6 py-4 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-t-lg">
                       <h2 className="text-lg font-bold flex items-center">
                         🔥 Hot Deals & M&A Activity
                         <span className="ml-2 px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">LIVE</span>
                       </h2>
-                      <p className="text-sm opacity-90">Latest funding & acquisition activity {targetingInput && `for "${targetingInput.slice(0, 30)}..."`}</p>
+                      <p className="text-sm opacity-90">Latest funding & acquisition activity</p>
                     </div>
-                    <div className="p-4 max-h-96 overflow-y-auto">
+                    <div className="p-4 max-h-80 overflow-y-auto">
                       <div className="space-y-3">
                         {deals.slice(0, 4).map((deal, index) => (
                           <div key={index} className="bg-white rounded-lg p-3 shadow-sm border hover:shadow-md transition-shadow">
@@ -269,15 +251,15 @@ const App = () => {
                   </div>
 
                   {/* Growth Intelligence News */}
-                  <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg shadow border-l-4 border-purple-500">
+                  <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg shadow-lg border-l-4 border-purple-500">
                     <div className="px-6 py-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-t-lg">
                       <h2 className="text-lg font-bold flex items-center">
                         📈 Growth Intelligence
                         <span className="ml-2 px-2 py-1 bg-white bg-opacity-20 rounded-full text-xs">TRENDING</span>
                       </h2>
-                      <p className="text-sm opacity-90">Latest startup & business intel {targetingInput && `for "${targetingInput.slice(0, 30)}..."`}</p>
+                      <p className="text-sm opacity-90">Latest startup & business intelligence</p>
                     </div>
-                    <div className="p-4 max-h-96 overflow-y-auto">
+                    <div className="p-4 max-h-80 overflow-y-auto">
                       <div className="space-y-3">
                         {news.slice(0, 4).map((item, index) => (
                           <div key={index} className="bg-white rounded-lg p-3 shadow-sm border hover:shadow-md transition-shadow">
@@ -295,7 +277,7 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Main Content Grid - Leads and GTM Signals - COMPACT & FLUSH */}
+              {/* Main Content Grid - COMPACT & FLUSH Layout */}
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-start">
                   
@@ -307,9 +289,9 @@ const App = () => {
                           🎯 High-Intent Prospects
                           <span className="ml-2 px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">{leads.length}</span>
                         </h2>
-                        <p className="text-sm text-gray-600">Companies showing growth signals {targetingInput && `for "${targetingInput.slice(0, 40)}..."`}</p>
+                        <p className="text-sm text-gray-600">Companies showing growth signals</p>
                       </div>
-                      <div className="max-h-[500px] overflow-y-auto">
+                      <div className="max-h-96 overflow-y-auto">
                         {loading ? (
                           <div className="p-4">
                             <div className="space-y-3">
@@ -332,7 +314,7 @@ const App = () => {
                           </div>
                         ) : (
                           <div className="p-4 space-y-3">
-                            {leads.slice(0, 8).map((lead) => (
+                            {leads.slice(0, 6).map((lead) => (
                               <div key={lead.id} className="border border-gray-200 rounded-lg p-3 hover:shadow-md transition-shadow hover:bg-gray-50">
                                 <div className="flex justify-between items-start mb-2">
                                   <div className="flex-1">
@@ -350,7 +332,7 @@ const App = () => {
                                   </div>
                                 </div>
                                 
-                                {/* Intent Signals - COMPACT */}
+                                {/* Intent Signals */}
                                 <div className="flex flex-wrap gap-1 mb-2">
                                   {lead.intent_signals?.slice(0, 2).map((signal, idx) => (
                                     <span key={idx} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-green-100 text-green-800 font-medium">
@@ -359,7 +341,7 @@ const App = () => {
                                   ))}
                                 </div>
                                 
-                                {/* Social Links - COMPACT */}
+                                {/* Social Links */}
                                 <div className="flex space-x-2">
                                   {lead.linkedin_url && (
                                     <a
@@ -411,9 +393,9 @@ const App = () => {
                           📡 Live GTM Signals
                           <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">LIVE</span>
                         </h2>
-                        <p className="text-sm text-gray-600">Real-time activity {targetingInput && `for "${targetingInput.slice(0, 25)}..."`}</p>
+                        <p className="text-sm text-gray-600">Real-time activity</p>
                       </div>
-                      <div className="max-h-[500px] overflow-y-auto p-3 space-y-2">
+                      <div className="max-h-96 overflow-y-auto p-3 space-y-2">
                         {tweetsLoading ? (
                           <div className="space-y-2">
                             {[1,2,3,4,5].map((i) => (
@@ -432,7 +414,7 @@ const App = () => {
                               </div>
                             ))}
                           </div>
-                        ) : tweets.filter(tweet => tweet.relevance_score > 4).slice(0, 12).map((tweet) => (
+                        ) : tweets.filter(tweet => tweet.relevance_score > 4).slice(0, 8).map((tweet) => (
                           <div key={tweet.id} className="border border-gray-200 rounded-lg p-2 hover:shadow-sm transition-shadow hover:bg-gray-50">
                             <div className="flex items-start justify-between mb-2">
                               <div className="flex items-center space-x-2 flex-1">
@@ -499,6 +481,7 @@ const App = () => {
                   </p>
                 </div>
               </div>
+
               {/* PDF Prompt Modal */}
               {showPdfPrompt && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
