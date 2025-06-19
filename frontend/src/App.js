@@ -262,84 +262,37 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Top Section: News + Stats */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
-          {/* News Section (3/4 width) */}
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-lg shadow">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-lg font-semibold text-gray-900">Startup & AI News</h2>
-              </div>
-              <div className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {news.slice(0, 4).map((item, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                      <div className="flex items-start justify-between mb-2">
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          {item.category}
-                        </span>
-                        <span className="text-xs text-gray-500">{item.relevance_score}/10</span>
-                      </div>
-                      <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">{item.title}</h3>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{item.description}</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500">{item.source}</span>
-                        <a 
-                          href={item.url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-green-600 hover:text-green-700"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        {/* News Section - Full Width, 5 Headlines */}
+        <div className="bg-white rounded-lg shadow mb-4">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Startup & AI News</h2>
           </div>
-
-          {/* Stats Cards (1/4 width) */}
-          <div className="lg:col-span-1">
-            <div className="space-y-4">
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="flex items-center">
-                  <Users className="w-6 h-6 text-green-500" />
-                  <div className="ml-3">
-                    <p className="text-xs font-medium text-gray-500">Total Leads</p>
-                    <p className="text-xl font-bold text-gray-900">{stats.total_leads || 0}</p>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+              {news.slice(0, 5).map((item, index) => (
+                <div key={index} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between mb-2">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {item.category}
+                    </span>
+                    <span className="text-xs text-gray-500">{item.relevance_score}/10</span>
+                  </div>
+                  <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">{item.title}</h3>
+                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">{item.description}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-500">{item.source}</span>
+                    <a 
+                      href={item.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-green-600 hover:text-green-700"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
                   </div>
                 </div>
-              </div>
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="flex items-center">
-                  <Star className="w-6 h-6 text-red-500" />
-                  <div className="ml-3">
-                    <p className="text-xs font-medium text-gray-500">High Priority</p>
-                    <p className="text-xl font-bold text-gray-900">{stats.high_priority_leads || 0}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="flex items-center">
-                  <Calendar className="w-6 h-6 text-blue-500" />
-                  <div className="ml-3">
-                    <p className="text-xs font-medium text-gray-500">New Today</p>
-                    <p className="text-xl font-bold text-gray-900">{stats.new_leads_today || 0}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="flex items-center">
-                  <BarChart3 className="w-6 h-6 text-purple-500" />
-                  <div className="ml-3">
-                    <p className="text-xs font-medium text-gray-500">Avg Score</p>
-                    <p className="text-xl font-bold text-gray-900">{stats.avg_lead_score || 0}</p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
